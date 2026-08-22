@@ -242,3 +242,13 @@ performance:
   steps: 11571                      # step count
   dt_s: 0.011111111111111112        # simulation timestep [s]
   vsm_interval: 10                  # VSM aerodynamic update interval [steps]
+summary:
+  date: "2026-08-22"                # wall-clock date the run finished
+  time: "18:17:19"                  # wall-clock time the run finished
+  wind_speed_m_s: 7.0               # wind speed at 6 m sent to the optimizer [m/s]
+  mean_power_W: 14010               # mean reel-out power the run harvested [W]
+  power_ratio: 0.98                 # measured / predicted mean reel-out power, against the weighted prediction
+  total_wall_time_s: 178.4          # the whole script, start to this summary [s]
+  realtime_factor: 1.79             # sim_time / wall_time, excluding time frozen for re-optimization
+  optimization_requests: 7          # solves that completed, accepted or rejected
+  optimizations_installed: 7        # new paths actually flown
