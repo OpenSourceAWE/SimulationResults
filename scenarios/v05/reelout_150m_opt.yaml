@@ -247,20 +247,19 @@ performance:
 summary:
   date: "2026-08-22"                # wall-clock date the run finished
   time: "18:11:09"                  # wall-clock time the run finished
-  wind_speed_m_s: 5.0               # wind speed at 6 m sent to the optimizer [m/s]
-  mean_power_W: 4546                # mean reel-out power the run harvested [W]
+  wind_speed_gnd: 5.0               # wind speed at 6 m sent to the optimizer [m/s]
   power_ratio: 1.0                  # measured / predicted mean reel-out power, against the weighted prediction
   total_wall_time_s: 286.3          # the whole script, start to this summary [s]
   realtime_factor: 1.74             # sim_time / wall_time, excluding time frozen for re-optimization
   optimization_requests: 7          # solves that completed, accepted or rejected
   optimizations_installed: 7        # new paths actually flown
-  av_power_W: 4729                  # mean reel-out power over phase four [W]
-  min_power_W: 3329                 # min reel-out power over phase four [W]
-  max_power_W: 5347                 # max reel-out power over phase four [W]
-  min_force_N: 1872                 # min tether force over phase four [N]
-  av_force_N: 2373                  # mean tether force over phase four [N]
-  max_force_N: 2583                 # max tether force over phase four [N]
-  v_ro_min_m_s: 1.77                # min reel-out speed over phase four [m/s]
-  v_ro_av_m_s: 1.99                 # mean reel-out speed over phase four [m/s]
-  v_ro_max_m_s: 2.08                # max reel-out speed over phase four [m/s]
-  av_depower: 0.277                 # mean KCU depower over phase four [-]
+  av_power_ro: 4729                  # mean reel-out power over phase four [W]
+  min_power_ro: 3329                 # min reel-out power over phase four [W]
+  max_power_ro: 5347                 # max reel-out power over phase four [W]
+  min_force_ro: 1872                 # min tether force over phase four [N]
+  av_force_ro: 2373                  # mean tether force over phase four [N]
+  max_force_ro: 2583                 # max tether force over phase four [N]
+  v_ro_min: 1.77                # min reel-out speed over phase four [m/s]
+  v_ro_av: 1.99                 # mean reel-out speed over phase four [m/s]
+  v_ro_max: 2.08                # max reel-out speed over phase four [m/s]
+  av_depower_ro: 0.277                 # mean KCU depower over phase four [-]
