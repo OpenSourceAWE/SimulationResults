@@ -65,13 +65,9 @@ reelout:
     stop_reason: "length"           # criterion that ended reel-out: length, laps, or none
     laps_reeled: 7.72               # figure-eight laps completed by the time reel-out ended
   force:
-    mean_N: 6498                    # mean tether force over the reeling window [N]
-    peak_N: 6849                    # peak tether force over the reeling window [N]
-    cf_force_ro: 1.05               # crest factor: peak_N / mean_N
+    cf_force_ro: 1.05               # crest factor: peak / mean tether force over the reeling window
   power:
-    mean_W: 21228                   # mean reel-out power over the reeling window [W]
-    peak_W: 23967                   # peak reel-out power over the reeling window [W]
-    cf_power_ro: 1.13               # crest factor: peak_W / mean_W
+    cf_power_ro: 1.13               # crest factor: peak / mean reel-out power over the reeling window
     duration_s: 70.8                # reeling window length [s]
     n_samples: 6368                 # sample count in the reeling window
     energy_kJ: 1502.0               # energy over the reeling window [kJ]
@@ -245,3 +241,13 @@ summary:
   realtime_factor: 1.8              # sim_time / wall_time, excluding time frozen for re-optimization
   optimization_requests: 6          # solves that completed, accepted or rejected
   optimizations_installed: 6        # new paths actually flown
+  av_power_W: 21573                 # mean reel-out power over phase four [W]
+  min_power_W: 15718                # min reel-out power over phase four [W]
+  max_power_W: 23967                # max reel-out power over phase four [W]
+  min_force_N: 5390                 # min tether force over phase four [N]
+  av_force_N: 6535                  # mean tether force over phase four [N]
+  max_force_N: 6849                 # max tether force over phase four [N]
+  v_ro_min_m_s: 2.83                # min reel-out speed over phase four [m/s]
+  v_ro_av_m_s: 3.3                  # mean reel-out speed over phase four [m/s]
+  v_ro_max_m_s: 3.56                # max reel-out speed over phase four [m/s]
+  av_depower: 0.27                  # mean KCU depower over phase four [-]
