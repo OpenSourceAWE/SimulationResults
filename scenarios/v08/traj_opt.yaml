@@ -271,6 +271,36 @@ traj_opt:
     # re-anchoring may legitimately predict far less than the startup solve (200 ->
     # 116 W at 3 m/s), while every later step measured stays above 0.95.
     min_power_frac_prev: 0.7 # fraction of the previous install's power; 0 is off [-]
+    # Below this mean wind BOTH gates above are bypassed for a NEGATIVE prediction.
+    # The optimizer's winch model is out of its domain there — its softminus floor
+    # puts the representable force at ~883 N against a 585 N mean at 3 m/s — so a
+    # negative number means the model cannot represent the regime, not that the path
+    # is bad, and the retry chain only burns wall time (3 m/s: -342/-397/-328 W
+    # against a 198 W startup, 3 retries, 8 s held, old path kept). A POSITIVE
+    # prediction is still gated at any wind. See PlanWinchSpeed.md.
+    power_gate_wind_min: 4.0 # mean wind below which a negative pred bypasses  [m/s]
+    # Solve for the winch gain and the path TOGETHER: k_v goes out as a design
+    # variable, the server brackets it a factor 2 either side of the value sent, and
+    # the run flies the k_v that comes back (a path solved for one gain is not
+    # flyable with another). This is the lever for getting mean force under f_max —
+    # reeling out faster sheds force — after the flat tuning measured 8394 N mean at
+    # 9 m/s and 8150 N at 10 against f_max 8000 N. false keeps winch_kv(v_wind)'s
+    # value fixed. A reply that hit the bracket edge is reported as k_v_at_bound.
+    # OFF since 2026-08-25. It was first closed because the plant capped force
+    # nowhere, so the low k_v the solver chose built 12684 N against a winch rated
+    # 8400 while COSTING power. force_limit: "soft" (tau 2.48) now caps it — and
+    # re-measured against that limiter on 2026-08-25 it is STILL wrong, for a
+    # sharper reason: the soft law sheds force by reeling out FASTER, and its whole
+    # speed scale is k_v*sqrt(T), so halving k_v halves the limiter's authority.
+    # optimize_k_v does not merely bypass the cap, it turns down the gain of the
+    # loop that enforces it. Measured: steady state indistinguishable from fixed
+    # gain (7841 +- 278 N vs 7803 +- 313, both 0 % over 8400), but the solver flew
+    # k_v = 0.02237 (-45 %) from t = 0 and peak force hit 11242 N at t = 36.0 s,
+    # every over-limit sample inside t = 25.2 .. 41.6 s, power 28999 vs 29737 W.
+    # Reopening this needs the read-backs moved behind the gates (stage 2b item 2 —
+    # a REJECTED candidate still moved k_v at t = 67.9 s in that run) and a bracket
+    # that cannot halve the limiter. See PlanWinchSpeed.md stages 2 and 4.
+    optimize_k_v: false      # let the optimizer choose k_v; false = fixed        [-]
     reopt_poll_interval: 0.5 # seconds between /status polls; simulated when
                              # reopt_blocking is false, wall-clock when true    [s]
     # Halt the loop while a solve runs, instead of flying on through it. A solve is
