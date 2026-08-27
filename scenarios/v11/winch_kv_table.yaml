@@ -1,0 +1,118 @@
+# Wind-dependent winch-law parameters, interpolated linearly between rows and
+# CLAMPED outside the identified range rather than extrapolated. Read by
+# `winch_kv(v_wind)` and `winch_f_low(v_wind)`; each overrides the flat value of
+# the same name in data/wc_settings.yaml. Add a row and re-identify the curve
+# here, not a new key elsewhere, when another wind speed is tuned.
+#
+# kv     — `v_set = kv * sqrt(force)`. Flat at 0.0408 up to 9 m/s, rising to
+#          0.0558 at 10 m/s and 0.0738 at 11 m/s; only those three points have
+#          been tuned, so the rows at 3 and 4 m/s repeat 0.0408 to keep the
+#          curve flat below 9.
+#
+#          11 m/s needed its own row: force_limit_tau does almost nothing there
+#          (measured 2026-08-26, tau 2.48 -> 3.49 at the clamped kv 0.0558 —
+#          v_ro std only 1.60 -> 1.55 m/s, %>8400N stuck at 38-40 %), because
+#          `calc_vro_soft` pins the command at v_sat once force >= f_high
+#          regardless of kv, and at 11 m/s the run spends ~40 % of its time
+#          there — a duty-cycle problem tau cannot filter away. kv is the lever
+#          that actually works, by reeling out faster BEFORE force reaches
+#          f_high so less of the run falls into that pinned region. Sweep at
+#          tau 2.48 (150 -> 380 m, no turbulence):
+#
+#            kv      mean F   std F   peak F   %>8400N  power    verdict
+#            0.0558   7884 N  1468 N  10615 N   40.4 %  46354 W  all 9 passed
+#            0.0642   7840 N   792 N  10075 N   18.3 %  46776 W  FAILED phase 5
+#            0.0738   7299 N   691 N   9771 N    5.1 %  44975 W  all 9 passed
+#            0.0849   6600 N   706 N   9829 N    4.2 %  42188 W  all 9 passed
+#            0.0976   5867 N   788 N   9086 N    1.4 %  38874 W  all 9 passed
+#            0.1122   5275 N  1103 N   9038 N    1.2 %  35401 W  FAILED — overspeed
+#                                                                  abort, run diverged
+#
+#          0.0738 shipped: force std roughly halves and the over-rating duty
+#          cycle drops 40.4 % -> 5.1 % for a 3 % power cost — the best point
+#          before power starts falling fast. 0.1122 is UNSAFE, not just a worse
+#          trade: v_app hit the 45 m/s overspeed guard and the run aborted.
+#
+#          12 m/s has NO row: it is currently OUT OF ENVELOPE, and kv is not
+#          the fix. Measured 2026-08-26, +-5/10 % around the clamped 0.0738 —
+#          EVERY run hit the v_app overspeed guard (>45 m/s) and aborted before
+#          2.5-3 of the intended laps, `stop_reason: "none"` in all five. Raising
+#          kv still traded force for power the same way it did at 11 m/s
+#          (%>8400N 34.9 %->6.2 % from 0.0664->0.0812), but none of those runs
+#          completed, so the numbers describe a truncated flight, not a steady
+#          one. v_app_ref is already exceeded by +22-23 % at 12 m/s (+20 % at
+#          11); the next lever is the PATTERN/depower (v_app_ref itself, or
+#          more depower at high wind), not the winch law. Until that is fixed,
+#          12 m/s clamps to the 11 m/s row — untested, and likely still too
+#          fast, but there is no measurement yet that says otherwise.
+#
+# f_low  — force floor [N] below which the LowerForceController reels in. It has
+#          to move with the wind because the winch's rating does not and the
+#          kite's force does (with the square of the wind speed), so one value
+#          cannot serve both ends: 350 N was sized for a 4000 N winch and is too
+#          low for this one from 4 m/s up, while 700 N takes over the run at
+#          3 m/s. Measured 2026-08-25 at 150 m:
+#
+#            v_wind  f_low  limiter share  max d    power   verdict
+#              3.0    350       20.6 %     5.54°    559 W   all 9 passed
+#              3.0    700       63.2 %     8.02°    675 W   FAILED max d
+#              4.0    700        1.1 %      —      2043 W   all 9 passed
+#
+#          The 3 m/s row is therefore 350 and everything from 4 m/s up is 700.
+#          NOT the entry guard's floor: that is `FC_Settings.entry_f_min`, which
+#          is bounded by what a DEPOWERED wing can pull and does not scale here.
+#
+# force_limit — `WCSettings.force_limit`, read by `winch_force_limit(v_wind)`.
+#          NOT interpolated: it is a step, the value of the last row at or below
+#          the wind speed. `data/wc_settings.yaml` says "hard" so a script that
+#          never consults this table gets the safe law.
+#
+#          "soft" makes the reel-out law itself the upper force limiter, by
+#          inverting the optimizer's own saturating tension curve. It is a
+#          HIGH-WIND tool and is only defined over part of the range:
+#
+#            - Its effective floor is sp(beta*f_low)/beta, 884 N at f_low 350, and
+#              at beta 1e-3 no f_low puts that below ln2/beta = 693 N. The 3 m/s
+#              force range is 587 +- 165 N — entirely BELOW the floor, where the
+#              law commands a standstill. Raising beta is closed: 2e-3 and 5e-3
+#              both make the 3 m/s solve fail (422). So 3 m/s must be "hard".
+#            - At 4 m/s the mean force (1350 N) sits just above the 1104 N floor,
+#              where the inverse is steep; the loop-gain estimate there is 1.16,
+#              the worst of any wind speed. "hard" until measured otherwise.
+#            - Measured at 6 m/s: a NO-OP (3451 +- 436 N vs 3423 +- 414 hard,
+#              power within 0.3 %), so it is safe from there up.
+#            - Measured at 9 m/s: the win it exists for — 0 % of the steady window
+#              over the plant's 8400 N rating against 73.7 %, at 1.7 % power.
+#
+#          5 m/s is untested and takes the 4 m/s row's "hard" by the step rule.
+entries:
+  - v_wind: 3.0
+    kv: 0.0408
+    f_low: 350.0
+    force_limit: "hard"
+  - v_wind: 4.0
+    kv: 0.0408
+    f_low: 700.0
+    force_limit: "hard"
+  # Neutral for kv and f_low (both already flat from 4 to 9); the row exists to
+  # put the hard -> soft step at the lowest wind speed where soft was measured.
+  - v_wind: 6.0
+    kv: 0.0408
+    f_low: 700.0
+    force_limit: "soft"
+  - v_wind: 9.0
+    kv: 0.0408
+    f_low: 700.0
+    force_limit: "soft"
+  - v_wind: 10.0
+    kv: 0.0408
+    f_low: 700.0
+    force_limit: "soft"
+  - v_wind: 11.0
+    kv: 0.0408
+    f_low: 700.0
+    force_limit: "soft"
+  - v_wind: 12.0
+    kv: 0.0408
+    f_low: 700.0
+    force_limit: "soft"

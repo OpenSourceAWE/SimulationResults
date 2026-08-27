@@ -13,4 +13,4 @@ gui:
     project: "system_fig8_150m.yaml"     # system_fig8_{150,200,300}m.yaml
     sim_time: 150.0                  # seconds, or "default" for the project's own sim_time
     plots: "pattern,time_series,power,aerodynamics"         # subset, or "none"
-    wind_speed: 10.0
+    wind_speed: 11.0
