@@ -7,10 +7,10 @@
 # an example script runs. The `gui:` section and the quoted values are what
 # V3Kite's reader expects; the other keys share the section.
 gui:
-    default_turbulence: 0.0        # turbulence level init() applies, between 0.0 and 1.0
+    default_turbulence: "default"        # turbulence level init() applies, between 0.0 and 1.0
                                          # 0.0 disables turbulence, 1.0 is the Cabauw reference level
                                          # "default" keeps use_turbulence from the settings YAML
-    project: "system_fig8_150m.yaml"     # system_fig8_{150,200,300}m.yaml
-    sim_time: 150.0                  # seconds, or "default" for the project's own sim_time
-    plots: "pattern,time_series,power,aerodynamics"         # subset, or "none"
+    project: "system_reelout_150m.yaml"     # system_fig8_{150,200,300}m.yaml
+    sim_time: "default"                  # seconds, or "default" for the project's own sim_time
+    plots: "pattern,time_series,power,aerodynamics"  # subset, or "none"
     wind_speed: 4.0
