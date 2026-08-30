@@ -86,9 +86,16 @@ fc_settings:
                                # still gets its full settling delay. Inf disables it.
 
   # --- entry state machine: park -> dive -> hold -> transition --------------
-  chi_dive:           -95.0    # Dive course; >90 descends, <90 climbs, 90 flat    [deg]
+  # -135 since 2026-08-30, set at 3.5 m/s where -125 still dipped to 5.1 deg whole-run
+  # elevation in phase 3. Steeper trades azimuth traverse for descent: at -95 the "dive"
+  # was 5 deg past flat, traversing 110 deg of azimuth and dumping the kite at the edge
+  # of the window. See the tuning log; back off towards -110 if a steeper dive undershoots.
+  chi_dive:          -135.0    # Dive course; >90 descends, <90 climbs, 90 flat    [deg]
   chi_hold:           -90.0    # Course commanded during the hold                 [deg]
-  dive_el_margin:     13.0     # Margin above el_center where the dive ends       [deg]
+  # 17.0 since 2026-08-29: at 13.0 the corrected mass still dipped to 5.9 deg whole-run
+  # elevation, 0.6 deg short of the 6.5 deg gate. Raising the margin gives phase 3 more
+  # altitude to spend; closes the gap to 7.9 deg with no phase-4 regression.
+  dive_el_margin:     17.0     # Margin above el_center where the dive ends       [deg]
   hold_time:          0.8      # Duration of the hold                               [s]
   fig8_d_gate:        4.0      # Cross-track error, transition -> fig8            [deg]
 
@@ -116,13 +123,23 @@ fc_settings:
   f8_d:               0.0      # Asymmetry factor                                   [-]
   el_center:          18.0     # Centre elevation; lower turns easier, costs energy [deg]
   attractor_dist:      8.0     # Arc distance Q -> attractor                      [deg]
+  # 6.0 since 2026-08-30, up from the 3.0 default: at 3.0 the phase-5 sag (~3.7 deg mean
+  # cross-track at 3.5 m/s) is the same size as the threshold, and at t = 359.6 s of the
+  # 12:22 run the global best beat the in-window best by 3.06 deg right at the centre
+  # crossing, handing Q to the reverse branch — course flipped 130 deg, the kite spun an
+  # extra loop and heading range hit 624 deg against the 400 deg gate. See the tuning log.
+  reacquire_margin:    6.0     # Global best must beat the in-window best by this  [deg]
   up_loops:           false    # Up-loops instead of down-loops; down crosses the centre
   el_bias_gain:        0.5     # Per-lap learning gain for the elevation bias; 0 = off [-]
   el_bias_gain_final:  1.0     # Same, from state 5 on, where the sag deepens        [-]
   el_bias_max:         4.0     # Clamp on the learnt elevation correction, per band [deg]
   el_bias_bins:          5     # Azimuth bands the correction is learnt over; 1 = rigid [-]
   el_bias_smooth:     0.25     # How far each band is pulled to its neighbours per lap [-]
-  el_offset_final:     1.5     # Extra lift of the path once reel-out ends       [deg]
+  # 3.0 since 2026-08-30: at 1.5 the phase-5 sag measured 1.5-3.4 deg in every azimuth
+  # band, deeper than the lift meant to cover it, and 5 m/s failed the elevation gate
+  # there. The lift budget had +1.98 deg at 5 m/s before the elevation-span criterion
+  # binds; see the tuning log and PlanPhase5Sink.md.
+  el_offset_final:     3.0     # Extra lift of the path once reel-out ends       [deg]
   el_offset_lead:      8.0     # How early the lift starts; gets it past the phase-5 gate [s]
   el_offset_wing:      1.5     # Extra lift at the LOBES, none in the centre       [deg]
   el_offset_wing_az:  10.0     # |azimuth| beyond which that lift is full   [deg or fraction of A]

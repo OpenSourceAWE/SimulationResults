@@ -87,37 +87,59 @@ wc_settings:
   # law rather than two. It replaces the UpperForceController, which is then held
   # in reset for the whole run — it oscillated, and this is the structure that
   # removes the switching it oscillated on. "hard" restores the two-limiter
-  # behaviour and is the struct default, so other projects are unaffected.
-  force_limit:      "hard" # "soft" | "hard"
-                           # SAFE DEFAULT, deliberately not "soft":
+  # behaviour; "soft" is now the struct default (2026-08-28), since sharpening
+  # softminus_beta locally (below) made every row of winch_kv_table.yaml "soft".
+  force_limit:      "soft" # "soft" | "hard"
                            # simple_opt_reelout.jl overrides this per wind speed
                            # from winch_kv_table.yaml's force_limit column, like kv
-                           # and f_low, and the soft law is only DEFINED above
-                           # ~5 m/s (its floor is above the whole force range at
-                           # 3 m/s). A script that never consults that table — or a
-                           # wind speed nobody has measured — therefore gets the
-                           # hard law rather than one that may stall the winch.
+                           # and f_low. That table is "soft" for every measured
+                           # wind speed (3-12 m/s); a script that never consults
+                           # it, or a wind speed nobody has measured, still gets
+                           # this same default rather than a value tied to one
+                           # specific project's table.
   softplus_beta:    0.001  # corner sharpness of the UPPER limit; larger = sharper [1/N]
                            # Left at 1e-3: f_high 8000 >> 1/beta 1000 makes the
                            # smoothing harmless there, and this is the knee the
                            # force_limit_tau sweep was tuned against.
-  softminus_beta:   0.001  # corner sharpness of the LOWER limit                   [1/N]
-                           # DO NOT RAISE THIS TO FIX THE 3 m/s FLOOR — measured
-                           # 2026-08-25: 2e-3 and 5e-3 both make the 3 m/s startup
-                           # solve FAIL (422, Max_Iterations_Exceeded), 1e-3
-                           # converges. The smoothing is part of what conditions the
-                           # NLP, and 3 m/s is the marginal case. See the tuning log.
-                           # The floor is sp(beta*f_low)/beta = 884 N at f_low 350,
-                           # and at 1e-3 it can never go below ln2/beta = 693 N for
-                           # ANY f_low — above the whole 3 m/s force range
-                           # (587 +- 165 N). force_limit: "soft" is therefore NOT
-                           # usable at 3 m/s by any beta the solver accepts.
-                           # Both betas ARE now sent to the optimizer by
-                           # winch_from_wc, so its curve and calc_vro_soft's inverse
-                           # can no longer drift apart by coincidence. This NEEDS an
-                           # AWETrim carrying the WinchParams beta fields — branch
-                           # add_winch_beta, commit 254dd9e. An older server rejects
-                           # them with a 422, since they are sent unconditionally.
+  softminus_beta:   0.03   # corner sharpness of the LOWER limit [1/N]; "hard" force_limit
+                           # and force_limit = "soft" WITHOUT soft_lfc only (with soft_lfc
+                           # below, calc_vro_soft hard-clamps at f_low instead, and this
+                           # plays no part locally — see reel_in_beta). Left sharpened
+                           # (needs * f_low >= 8, 0.03 * 350 = 10.5) for whichever of those
+                           # two a script selects. SAFE to leave sharp here: AWETrim always
+                           # sees a fixed AWETRIM_SOFTMINUS_BETA = 1e-3
+                           # (examples/awetrim_client.jl), never this value — measured
+                           # 2026-08-25, 2e-3/5e-3 already make the 3 m/s solve FAIL (422,
+                           # Max_Iterations_Exceeded), so this field driving the server
+                           # directly is what the pin exists to prevent. See the tuning log.
+  soft_lfc:         true   # also replace the LowerForceController with a reel-in line
+  v_reel_in:        -2.0   # reel-in speed at zero force [m/s]
+  reel_in_beta:     20.0   # sharpness of the smooth line/curve handover [s/m]; needs
+                           # * kv * sqrt(f_low) >= 8, i.e. >= 10.48 at the table's worst
+                           # case (v_wind = 3 m/s, f_low = 350) -- calc_vro_soft itself
+                           # throws if this is violated at any wind speed the table sends.
+                           # reel_in_beta is NOT wind-speed-overridden by winch_kv_table.yaml,
+                           # so this one flat value must clear every row's requirement.
+  use_awe_trim:     0.0    # calc_vro_soft's default blend towards AWETrim's own curve
+                           # constants, in [0, 1]; 0.0 leaves the law exactly as before.
+                           # See calc_vro_soft's docstring (WinchControllers.jl) and
+                           # Winch.tension_curve's (AWETrim, forward direction) for what
+                           # the blend does. examples/awetrim_client.jl's winch_from_wc
+                           # sends this same value to the server, alongside v_reel_in and
+                           # reel_in_beta, so a run that reels in locally optimizes against
+                           # a server winch model that can do the same.
+                           # This is the LOCAL law only. What AWETrim is sent is
+                           # traj_opt.yaml's opt_awe_trim, deliberately decoupled: the two
+                           # sides need opposite values.
+                           #
+                           # 0.0 here because this sets the force at which the winch starts
+                           # reeling out -- 350 N at 0.0 against 883 N at 1.0 -- and at
+                           # 3 m/s the kite cannot pull 883 N. Measured 2026-08-29: 0.875
+                           # stalled the run at 188.7 m of a 380 m target, mean force 707 N,
+                           # every re-optimization failing and 383 s of wall time frozen on
+                           # them, where 0.0 reaches 380 m and passes all 10 criteria.
+                           # Raise it only if the kite can actually pull the crossing force
+                           # at the wind being flown. See PlanFix3m_per_s.md.
   force_limit_tau:  2.48   # low-pass on the force before inverting; 0 = off        [s]
                            # dv/dF rises ~50x over the last kN below f_high, against
                            # a per-lap force std of ~1 kN at 9 m/s — that is why the

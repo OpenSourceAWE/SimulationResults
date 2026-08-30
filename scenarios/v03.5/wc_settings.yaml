@@ -87,15 +87,16 @@ wc_settings:
   # law rather than two. It replaces the UpperForceController, which is then held
   # in reset for the whole run — it oscillated, and this is the structure that
   # removes the switching it oscillated on. "hard" restores the two-limiter
-  # behaviour and is the struct default, so other projects are unaffected.
+  # behaviour; "soft" is now the struct default (2026-08-28), since sharpening
+  # softminus_beta locally (below) made every row of winch_kv_table.yaml "soft".
   force_limit:      "soft" # "soft" | "hard"
                            # simple_opt_reelout.jl overrides this per wind speed
                            # from winch_kv_table.yaml's force_limit column, like kv
-                           # and f_low, and the soft law is only DEFINED above
-                           # ~5 m/s (its floor is above the whole force range at
-                           # 3 m/s). A script that never consults that table — or a
-                           # wind speed nobody has measured — therefore gets the
-                           # hard law rather than one that may stall the winch.
+                           # and f_low. That table is "soft" for every measured
+                           # wind speed (3-12 m/s); a script that never consults
+                           # it, or a wind speed nobody has measured, still gets
+                           # this same default rather than a value tied to one
+                           # specific project's table.
   softplus_beta:    0.001  # corner sharpness of the UPPER limit; larger = sharper [1/N]
                            # Left at 1e-3: f_high 8000 >> 1/beta 1000 makes the
                            # smoothing harmless there, and this is the knee the
@@ -127,6 +128,18 @@ wc_settings:
                            # sends this same value to the server, alongside v_reel_in and
                            # reel_in_beta, so a run that reels in locally optimizes against
                            # a server winch model that can do the same.
+                           # This is the LOCAL law only. What AWETrim is sent is
+                           # traj_opt.yaml's opt_awe_trim, deliberately decoupled: the two
+                           # sides need opposite values.
+                           #
+                           # 0.0 here because this sets the force at which the winch starts
+                           # reeling out -- 350 N at 0.0 against 883 N at 1.0 -- and at
+                           # 3 m/s the kite cannot pull 883 N. Measured 2026-08-29: 0.875
+                           # stalled the run at 188.7 m of a 380 m target, mean force 707 N,
+                           # every re-optimization failing and 383 s of wall time frozen on
+                           # them, where 0.0 reaches 380 m and passes all 10 criteria.
+                           # Raise it only if the kite can actually pull the crossing force
+                           # at the wind being flown. See PlanFix3m_per_s.md.
   force_limit_tau:  2.48   # low-pass on the force before inverting; 0 = off        [s]
                            # dv/dF rises ~50x over the last kN below f_high, against
                            # a per-lap force std of ~1 kN at 9 m/s — that is why the
