@@ -253,6 +253,7 @@ summary:
   power_ratio: 1.16                 # measured / predicted reel-out power [-]
   power_ratio_free_speed: 1.11      # measured / free_speed reference reel-out power (779 W, an UPPER BOUND over any winch in [f_min, f_max]); above 1 cannot be explained by any winch law [-]
   success_criteria: "all 10 passed" # pass/fail verdict vs V3Kite's success criteria
+  cross_track_rms_deg: 2.51         # RMS cross-track error, settled window [deg]
   total_wall_time_s: 286.7          # the whole script, start to this summary [s]
   realtime_factor: 4.12             # sim_time / wall_time, excluding time frozen for re-optimization
   optimization_requests: 5          # solves that completed, accepted or rejected

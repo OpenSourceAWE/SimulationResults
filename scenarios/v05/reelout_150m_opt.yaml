@@ -235,6 +235,7 @@ summary:
   wind_speed_gnd: 5.0               # wind speed at 6 m sent to the optimizer [m/s]
   power_ratio: 1.02                 # measured / predicted reel-out power [-]
   success_criteria: "all 10 passed" # pass/fail verdict vs V3Kite's success criteria
+  cross_track_rms_deg: 2.52         # RMS cross-track error, settled window [deg]
   total_wall_time_s: 236.1          # the whole script, start to this summary [s]
   realtime_factor: 3.68             # sim_time / wall_time, excluding time frozen for re-optimization
   optimization_requests: 5          # solves that completed, accepted or rejected
