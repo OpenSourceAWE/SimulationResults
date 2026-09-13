@@ -518,7 +518,8 @@ document.readyState === "loading" ?
   document.addEventListener("DOMContentLoaded", wire) : wire();
 
 });</script></div></div></div></section><section class="exp-md"><p>The same run in 3D: the flown path in the world frame, coloured by the mechanical winch power, with the ground track underneath and the straight line to the ground station. Drag to rotate, scroll to zoom. Note that at 3 m/s no run was performed and the run at 3.5 m/s is shown instead.</p>
-</section><section class="exp-code"><div class="exp-ctls"><div class="exp-ctlcol"><label class="exp-ctl"><span class="exp-ctl-lbl">Wind</span><input type="range" min="3" max="11" step="1" value="6" data-name="wind_speed" data-widget="slider" disabled title="This control needs data shipped with the page to do anything."/><output class="exp-ctl-val">6</output></label></div></div><div class="exp-out"><div class="dispwrap"><div class="disp html"><style>#path3d iframe { display: block; margin: 0 auto; width: 100%; max-width: 1000px; height: 800px; border: 0; }
+</section><section class="exp-code"><div class="exp-ctls"><div class="exp-ctlcol"><label class="exp-ctl"><span class="exp-ctl-lbl">Wind</span><input type="range" min="3" max="11" step="1" value="6" data-name="wind_speed" data-widget="slider" disabled title="This control needs data shipped with the page to do anything."/><output class="exp-ctl-val">6</output></label></div></div><div class="exp-out"><div class="dispwrap"><div class="disp html"><style>/* the page inside scales its 1000x780 canvas to the iframe width, so the height follows the same ratio */
+#path3d iframe { display: block; margin: 0 auto; width: 100%; max-width: 1000px; aspect-ratio: 1000 / 780; border: 0; }
 #path3d-caption { text-align: center; font-size: 0.9em; color: #666; margin: 0.3em 0 0; }
 </style><!-- One iframe, its src swapped per wind speed, rather than nine: each page is a ~4 MB
      WebGL app, and browsers cap the number of live WebGL contexts (8-16). The files
