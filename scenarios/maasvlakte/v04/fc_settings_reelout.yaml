@@ -68,6 +68,25 @@ fc_settings:
   n_fig_eight:        0        # Laps after which reel-out stops; 0 = length only [-]
   depower_final:      0.35     # Flown from phase 5 (final), once l_max is reached; tuned
                                # to hold ~3458 N, the reel-out mean force — see the log   [-]
+  # Phase-5 force limiter, 2026-09-18: with the length frozen the depower is the
+  # only actuator left, and depower_final is one number tuned at 6 m/s while the
+  # frozen-length force follows v_app^2 — 8.1 kN mean, 8.6 kN peaks at Cabauw
+  # 8 m/s (v_app 41.5 m/s), against the 8400 N criterion. Above f_target the
+  # depower integrates up from depower_final, never past depower_final_max; below
+  # it, back down. From the reel-out STOP LATCH, not phase 5: the stop itself
+  # hands the kite its reel-out speed as apparent wind (6.1 -> 10.5 kN in 3 s at
+  # 9 m/s), so through the ramp it integrates on the force the stopped drum is
+  # about to see. Inert wherever phase 5 stays under the target: the strongest
+  # archived phase 5 before this was 7239 N (Cabauw 7 m/s), Maasvlakte 11 m/s 7022 N.
+  # 0.42 is inside the optimizer's own depower range (2.3 m = 0.44 equivalent);
+  # the phase-5 gate is read at depower_final's c1, the heading gain at the
+  # flown depower as far as the turn-rate table reaches (0.40 since 2026-09-18;
+  # rows 0.375/0.40 identified with the sweep's elevation floor at 40°).
+  depower_final_max:  0.42     # Ceiling of the phase-5 force limiter; = depower_final is OFF [-]
+  depower_final_f_target: 7500.0 # Force it holds against, below the 8400 N criterion by the lobe swing [N]
+  depower_final_f_gain: 2.0e-5 # Integrator gain, depower per N per s                  [1/(N s)]
+  depower_final_f_gain_stop: 1.0e-4 # The same during the soft-stop ramp: 3 s to move 0.35 -> 0.40,
+                               # the KCU tape's 0.075/s from 750 N of error up          [1/(N s)]
   depower_blend_time: 2.5      # Seconds over which `rel_depower` ramps to a new phase-ladder target
                                # instead of stepping to it. `0` restores the hard switch.     [s]
   reelout_softstart:  12.0     # Ramps the COMMANDED speed 0 -> v_set over this long  [s]
@@ -86,11 +105,11 @@ fc_settings:
                                # still gets its full settling delay. Inf disables it.
 
   # --- entry state machine: park -> dive -> hold -> transition --------------
-  # -125 since 2026-08-29, confirmed at the corrected (10.9926 kg) wing mass: at -95
-  # the "dive" is 5 deg past flat, so it descends barely at all and instead traverses
-  # 110 deg of azimuth. See the tuning log; back off towards -110 if a steeper dive
-  # is ever tried and undershoots.
-  chi_dive:          -125.0    # Dive course; >90 descends, <90 climbs, 90 flat    [deg]
+  # -135 since 2026-08-30, set at 3.5 m/s where -125 still dipped to 5.1 deg whole-run
+  # elevation in phase 3. Steeper trades azimuth traverse for descent: at -95 the "dive"
+  # was 5 deg past flat, traversing 110 deg of azimuth and dumping the kite at the edge
+  # of the window. See the tuning log; back off towards -110 if a steeper dive undershoots.
+  chi_dive:          -135.0    # Dive course; >90 descends, <90 climbs, 90 flat    [deg]
   chi_hold:           -90.0    # Course commanded during the hold                 [deg]
   # 17.0 since 2026-08-29: at 13.0 the corrected mass still dipped to 5.9 deg whole-run
   # elevation, 0.6 deg short of the 6.5 deg gate. Raising the margin gives phase 3 more
@@ -122,14 +141,24 @@ fc_settings:
   f8_c:               0.0      # Size of the right part                           [deg]
   f8_d:               0.0      # Asymmetry factor                                   [-]
   el_center:          18.0     # Centre elevation; lower turns easier, costs energy [deg]
-  attractor_dist:      8.0     # Arc distance Q -> attractor                      [deg]
+  attractor_dist:      6.0     # Arc distance Q -> attractor                      [deg]
+  # 6.0 since 2026-08-30, up from the 3.0 default: at 3.0 the phase-5 sag (~3.7 deg mean
+  # cross-track at 3.5 m/s) is the same size as the threshold, and at t = 359.6 s of the
+  # 12:22 run the global best beat the in-window best by 3.06 deg right at the centre
+  # crossing, handing Q to the reverse branch — course flipped 130 deg, the kite spun an
+  # extra loop and heading range hit 624 deg against the 400 deg gate. See the tuning log.
+  reacquire_margin:    6.0     # Global best must beat the in-window best by this  [deg]
   up_loops:           false    # Up-loops instead of down-loops; down crosses the centre
   el_bias_gain:        0.5     # Per-lap learning gain for the elevation bias; 0 = off [-]
   el_bias_gain_final:  1.0     # Same, from state 5 on, where the sag deepens        [-]
   el_bias_max:         4.0     # Clamp on the learnt elevation correction, per band [deg]
   el_bias_bins:          5     # Azimuth bands the correction is learnt over; 1 = rigid [-]
   el_bias_smooth:     0.25     # How far each band is pulled to its neighbours per lap [-]
-  el_offset_final:     1.5     # Extra lift of the path once reel-out ends       [deg]
+  # 3.0 since 2026-08-30: at 1.5 the phase-5 sag measured 1.5-3.4 deg in every azimuth
+  # band, deeper than the lift meant to cover it, and 5 m/s failed the elevation gate
+  # there. The lift budget had +1.98 deg at 5 m/s before the elevation-span criterion
+  # binds; see the tuning log and PlanPhase5Sink.md.
+  el_offset_final:     3.0     # Extra lift of the path once reel-out ends       [deg]
   el_offset_lead:      8.0     # How early the lift starts; gets it past the phase-5 gate [s]
   el_offset_wing:      1.5     # Extra lift at the LOBES, none in the centre       [deg]
   el_offset_wing_az:  10.0     # |azimuth| beyond which that lift is full   [deg or fraction of A]

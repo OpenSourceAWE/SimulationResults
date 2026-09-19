@@ -28,8 +28,8 @@ traj_opt:
     name: "simple_opt_fig8"  # name the optimization is registered under
 
     # --- Initial guess ---------------------------------------------------- #
-    # The STARTUP solve never retries with a different guess on its own; a
-    # re-optimization may, once, see reopt_retry_el_offset.
+    # The STARTUP solve retries a 422 only from the seeds startup_retry_el_offsets
+    # lists, and says so; a re-optimization may, once, see reopt_retry_el_offset.
     guess_a:          30.0   # width of the guess; azimuth spans ±guess_a    [deg]
     guess_b:          12.0   # height of the guess, peak to peak             [deg]
     guess_c:           0.0   # size of the right part                        [deg]
@@ -283,7 +283,7 @@ traj_opt:
     # on the spot.                                                            [deg]
     elevation_min_retry_margin: 0.5
     pattern_elevation_max: 0.0
-    pattern_azimuth_max: 0.0
+    pattern_azimuth_max: 25.0
     pattern_azimuth_amplitude_min: 0.0
     # Largest elevation HALF-SPAN [deg] of the optimized figure; 0.0 is off. One
     # smooth NLP row on the server (mean squared deviation of the elevation from
@@ -344,6 +344,20 @@ traj_opt:
     # the measured margin) and startup_retry_slack = 1.03 (floor as a factor on
     # min_feasibility_margin).
     startup_retries_max: 4
+    # Each corrected retry also caps the path's elevation this far BELOW the
+    # incumbent's highest point (the box's elevation_max); 0.0 leaves the box alone.
+    # Measured 2026-09-13 at 10 m/s, 150 m: the radius ask alone went 16.2 -> 18.7
+    # -> 21.1 m while the margin went 0.76 -> 0.79 -> 0.72, because every reply
+    # spent the room by climbing to a 37-39 deg top, where cos(elevation) makes the
+    # upper shoulder tighter. The passing v10 path (2026-08-30) topped out at 35 deg.
+    startup_retry_el_cap_step: 2.0                                            # [deg]
+    # Once the ceiling cannot go lower, a retry asks for the figure this much WIDER
+    # than the incumbent instead (the box's azimuth_amplitude_min), before the
+    # radius is raised; 0.0 never widens. Measured 2026-09-18 at 7 m/s, Cabauw,
+    # 150 m: every ceiling step 422'd (the figure's height would not shrink) and a
+    # raised radius came back taller, not wider — 0.73-0.79 whatever was asked.
+    # The passing figures are wider: v10 was +-24 deg at margin 1.03, this +-18.
+    startup_retry_az_widen_step: 2.0                                          # [deg]
     # A pattern collapsed to near-zero amplitude clears curvature, clearance and
     # blend_folds trivially — there is almost no pattern left to be tight, low or
     # foldable — and was installed anyway at 2094 W against ~22000 W everywhere else
@@ -356,8 +370,15 @@ traj_opt:
     # since predicted power rises with length and its startup reference is the run's
     # minimum. Skipped until one re-optimization has installed a path: the first
     # re-anchoring may legitimately predict far less than the startup solve (200 ->
-    # 116 W at 3 m/s), while every later step measured stays above 0.95.
-    min_power_frac_prev: 0.7 # fraction of the previous install's power; 0 is off [-]
+    # 116 W at 3 m/s), while every later step measured stays above 0.93 (worst is
+    # 0.93 at 11 m/s; the recorded 3.5-10 m/s runs never go below 0.98). Measured
+    # 2026-09-18 at 6 m/s: the third re-opt at 270 m returned 5338 W against the
+    # 7391 W it replaced — a ratio of 0.72 that a 0.7 floor let through. The reply
+    # was the tall-pattern basin (elevation amplitude binding at the 10 deg
+    # ceiling, tension 1789 N against 2830 N, 532 IPOPT iterations to "acceptable"
+    # only), flown for 48 % of the reel-out: 6132 W measured against 7281 W for
+    # the recorded v06 run, and max cross-track 8.9 deg failed the 8 deg criterion.
+    min_power_frac_prev: 0.85 # fraction of the previous install's power; 0 is off [-]
     # Below this mean wind BOTH gates above are bypassed for a NEGATIVE prediction.
     # The optimizer's winch model is out of its domain there — its softminus floor
     # puts the representable force at ~883 N against a 585 N mean at 3 m/s — so a
@@ -394,17 +415,24 @@ traj_opt:
     # 7-13 s, over which the tether grows by that times the reel-out speed, so a
     # non-blocking reply is anchored to a radius the run has already left. Blocking
     # removes that lag and costs the wall time: the frozen seconds are reported as
-    # traj_opt.reopt.blocked_s and are taken out of performance.realtime_factor.
+    # traj_opt.reopt.blocked and are taken out of performance.realtime_factor.
     reopt_blocking: true     # freeze the simulation until the reply lands       [-]
     # Elevation offset added to guess_el_center for ONE retry when a re-optimization
     # comes back "failed"; 0.0 never retries. The optimizer has isolated failure
     # pockets in tether length and a different seed usually lands outside the bad
-    # basin. The STARTUP solve still never retries: there a guess that merely
-    # converges is a different optimum flown silently, while a re-optimization is a
-    # candidate that must pass the curvature, clearance and elevation gates first,
-    # and a failure only means flying on. Blocking mode only; without the hold there
-    # is nothing to retry within.
+    # basin. A re-optimization is a candidate that must pass the curvature,
+    # clearance and elevation gates first, and a failure only means flying on.
+    # Blocking mode only; without the hold there is nothing to retry within.
     reopt_retry_el_offset: 2.0 # guess_el_center offset for one retry           [deg]
+    # Offsets added to the STARTUP guess's centre elevation, tried in order when the
+    # startup solve throws 422; [] never retries and the first 422 ends the run. A
+    # retry that converges is a different optimum, so the run warns which seed it
+    # flew and the summary records it (traj_opt.guess.el_center_retry_offset_deg);
+    # the path still has to pass the startup gates. Measured 2026-09-13 at 10 m/s,
+    # 150 m: the 30 deg seed is on a fold (422 or a margin-1.03 path, decided by
+    # floating-point noise), 31 deg converges into a basin at 35-39 deg elevation
+    # whose margin (0.66) fails the gate. So -1 first, +2 after.
+    startup_retry_el_offsets: [-1.0, 2.0]                                     # [deg]
 
     # Extra elevation a path must clear above fc_settings*.yaml's min_elevation
     # before it is flown; 0.0 gates on min_elevation alone. The gate reads the
