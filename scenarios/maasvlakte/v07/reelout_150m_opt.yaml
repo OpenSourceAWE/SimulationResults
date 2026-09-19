@@ -268,7 +268,7 @@ summary:
   av_power_ro: 12194                # mean reel-out power over phase four [W]
   min_power_ro: 7909                 # min reel-out power over phase four, last 2 s excluded [W]
   max_power_ro: 15655               # max reel-out power over phase four [W]
-  min_force_ro: 3372                # min tether force over phase four [N]
+  min_force_ro: 3562                # min tether force over phase four, last 2 s excluded [N]
   av_force_ro: 4540                 # mean tether force over phase four [N]
   max_force_ro: 5976                # max tether force over phase four [N]
   v_ro_min: 1.87                    # min reel-out speed over phase four, last 2 s excluded [m/s]
