@@ -1,0 +1,28 @@
+entries:
+  system_reelout_cabauw@5.75:
+    wind_speed: 5.75
+    seeded_from:
+      - 0.511
+      - 1.07
+      - 1.668
+      - 1.718
+      - 1.161
+    runs: 11
+    previous_profile_deg:
+      - 0.511
+      - 1.07
+      - 1.668
+      - 1.718
+      - 1.161
+    turbulence: "0.0"
+    project: "system_reelout_cabauw"
+    profile_deg:
+      - 0.448
+      - 0.995
+      - 1.612
+      - 1.714
+      - 1.188
+    log: "reelout_cabauw_opt"
+    updated: "2026-09-20 14:27:57"
+    bins: 5
+    laps: 2
