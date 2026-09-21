@@ -29,7 +29,7 @@ fc_settings:
   depower_final:      0.35     # Flown from phase 5; tuned to hold ~3458 N at 6 m/s [-]
   depower_final_max:  0.42     # Ceiling of the phase-5 force limiter; = depower_final is OFF [-]
   depower_final_f_target: 7500.0 # Force the limiter holds, under 8400 N by the lobe swing [N]
-  depower_final_f_gain: 2.0e-5 # Limiter integrator gain, depower per N per s    [1/(N s)]
+  depower_final_f_gain: 6.0e-5 # Limiter integrator gain, depower per N per s    [1/(N s)]
   depower_final_f_gain_stop: 1.0e-4 # Same during the soft-stop ramp: 0.35 -> 0.40 in 3 s [1/(N s)]
   depower_blend_time: 2.5      # Ramp of `rel_depower` to a new ladder target; 0 = step [s]
   reelout_softstart:  12.0     # Ramps the COMMANDED speed 0 -> v_set over this long  [s]
@@ -77,6 +77,12 @@ fc_settings:
   heading_i:          false    # Integral time [s], or false for no integral action
   heading_d:          0.12     # Derivative time [s]
   heading_d_n:        2.0      # Derivative filter, max gain of the D path          [-]
+  ff_gain:            0.7      # Curvature feed-forward, u_ff = psi_dot_path/(c1 v_app); 0 = off [-]
+  ff_lead_time:       0.45     # Read the path's course rate this far ahead of Q; ~the dead time [s]
+  ff_smooth:          6.0      # Arc the tangent change is averaged over               [deg]
+  ff_tau:             0.2      # Low-pass on u_ff and the chord correction; 0 = none    [s]
+  ff_d_fade:          6.0      # Cross-track error at which the ff is fully off; fades from half [deg]
+  ff_err_fade:        60.0     # Course error at which the ff is fully off; fades from half  [deg]
   v_app_ref:          27.0     # Speed flown in phase 3; anchors the gain schedule [m/s]
   v_app_min:          10.0     # Lower clamp on v_app, limits the gain boost      [m/s]
   entry_gain:         0.25     # Factor on heading_p during the entry phases        [-]
@@ -96,7 +102,7 @@ fc_settings:
 
   # --- guards and metrics ---------------------------------------------------
   entry_f_min:        350.0    # Force floor of the entry guard, phases 0-2; not wc's f_low [N]
-  first_lap_force_frac: 1.0    # f_high x this during the first figure of eight; 1 = OFF [-]
+  first_lap_force_frac: 0.9375 # f_high x this in lap 1 AND for the startup solve: 7500 N, = f_high_awe_trim [-]
   v_app_abort:        55.0     # Stop the run above this apparent wind speed      [m/s]
   entry_time:         62.0     # Settle time after park_time before the metrics     [s]
   min_elevation:       6.5     # Floor criterion over the WHOLE run; also the reopt install gate [deg]
