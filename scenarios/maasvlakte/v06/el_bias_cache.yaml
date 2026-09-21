@@ -53,30 +53,170 @@ entries:
     updated: "2026-09-20 14:27:57"
     bins: 5
     laps: 2
-  system_reelout_maasvlakte@6.00:
-    wind_speed: 6.0
+  system_reelout_maasvlakte@8.25:
+    wind_speed: 8.25
     seeded_from:
-      - 0.53
-      - 0.833
-      - 1.215
-      - 1.172
-      - 0.744
-    runs: 6
+      - 0.466
+      - 0.713
+      - 0.929
+      - 0.99
+      - 0.699
+    runs: 3
     previous_profile_deg:
-      - 0.53
-      - 0.833
-      - 1.215
-      - 1.172
-      - 0.744
+      - 0.466
+      - 0.713
+      - 0.929
+      - 0.99
+      - 0.699
     turbulence: "0.0"
     project: "system_reelout_maasvlakte"
     profile_deg:
+      - 0.467
+      - 0.702
+      - 0.897
+      - 0.972
+      - 0.687
+    seed_source: "exact"
+    log: "reelout_150m_opt"
+    updated: "2026-09-21 12:21:12"
+    bins: 5
+    laps: 2
+  system_reelout_maasvlakte@9.00:
+    wind_speed: 9.0
+    seeded_from:
+      - 0.315
+      - 0.739
+      - 1.323
+      - 1.478
+      - 1.104
+    runs: 5
+    previous_profile_deg:
+      - 0.315
+      - 0.739
+      - 1.323
+      - 1.478
+      - 1.104
+    turbulence: "0.0"
+    project: "system_reelout_maasvlakte"
+    profile_deg:
+      - 0.314
+      - 0.755
+      - 1.361
+      - 1.505
+      - 1.106
+    log: "reelout_150m_opt"
+    updated: "2026-09-21 11:55:06"
+    bins: 5
+    laps: 2
+  system_reelout_maasvlakte@10.00:
+    wind_speed: 10.0
+    seeded_from:
+      - -0.88
+      - 0.127
+      - 1.645
+      - 2.184
+      - 1.5
+    runs: 6
+    previous_profile_deg:
+      - -0.88
+      - 0.127
+      - 1.645
+      - 2.184
+      - 1.5
+    turbulence: "0.0"
+    project: "system_reelout_maasvlakte"
+    profile_deg:
+      - -0.534
+      - 0.303
+      - 1.613
+      - 2.037
+      - 1.352
+    seed_source: "exact"
+    log: "reelout_150m_opt"
+    updated: "2026-09-21 14:13:56"
+    bins: 5
+    laps: 2
+  system_reelout_maasvlakte@6.00:
+    wind_speed: 6.0
+    seeded_from:
       - 0.531
       - 0.855
       - 1.228
       - 1.158
       - 0.718
+    runs: 7
+    previous_profile_deg:
+      - 0.531
+      - 0.855
+      - 1.228
+      - 1.158
+      - 0.718
+    turbulence: "0.0"
+    project: "system_reelout_maasvlakte"
+    profile_deg:
+      - 0.399
+      - 0.767
+      - 1.293
+      - 1.409
+      - 0.933
+    seed_source: "exact"
     log: "reelout_150m_opt"
-    updated: "2026-09-21 00:14:15"
+    updated: "2026-09-21 14:15:37"
+    bins: 5
+    laps: 2
+  system_reelout_maasvlakte@11.00:
+    wind_speed: 11.0
+    seeded_from:
+      - 0.803
+      - 1.185
+      - 1.719
+      - 1.783
+      - 1.183
+    runs: 7
+    previous_profile_deg:
+      - 0.803
+      - 1.185
+      - 1.719
+      - 1.783
+      - 1.183
+    turbulence: "0.0"
+    project: "system_reelout_maasvlakte"
+    profile_deg:
+      - 0.57
+      - 0.977
+      - 1.723
+      - 1.963
+      - 1.378
+    seed_source: "exact"
+    log: "reelout_150m_opt"
+    updated: "2026-09-21 13:25:15"
+    bins: 5
+    laps: 2
+  system_reelout_maasvlakte@8.50:
+    wind_speed: 8.5
+    seeded_from:
+      - 0.421
+      - 0.728
+      - 0.993
+      - 1.117
+      - 0.849
+    runs: 3
+    previous_profile_deg:
+      - 0.421
+      - 0.728
+      - 0.993
+      - 1.117
+      - 0.849
+    turbulence: "0.0"
+    project: "system_reelout_maasvlakte"
+    profile_deg:
+      - 0.413
+      - 0.772
+      - 1.064
+      - 1.108
+      - 0.84
+    seed_source: "exact"
+    log: "reelout_150m_opt"
+    updated: "2026-09-21 12:28:20"
     bins: 5
     laps: 2
