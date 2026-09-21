@@ -190,29 +190,29 @@ entries:
   system_reelout_maasvlakte@10.00:
     wind_speed: 10.0
     seeded_from:
-      - -0.534
-      - 0.303
-      - 1.613
-      - 2.037
-      - 1.352
-    runs: 7
+      - -0.88
+      - 0.127
+      - 1.645
+      - 2.184
+      - 1.5
+    runs: 6
     previous_profile_deg:
-      - -0.534
-      - 0.303
-      - 1.613
-      - 2.037
-      - 1.352
+      - -0.88
+      - 0.127
+      - 1.645
+      - 2.184
+      - 1.5
     turbulence: "0.0"
     project: "system_reelout_maasvlakte"
     profile_deg:
-      - -1.008
-      - -0.085
-      - 1.365
-      - 1.956
-      - 1.389
+      - -0.534
+      - 0.303
+      - 1.613
+      - 2.037
+      - 1.352
     seed_source: "exact"
     log: "reelout_150m_opt"
-    updated: "2026-09-21 15:13:34"
+    updated: "2026-09-21 14:13:56"
     bins: 5
     laps: 2
   system_reelout_maasvlakte@8.25:
