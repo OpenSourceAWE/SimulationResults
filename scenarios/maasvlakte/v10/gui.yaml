@@ -12,5 +12,5 @@ gui:
                                          # "default" keeps use_turbulence from the settings YAML
     project: "system_reelout_maasvlakte.yaml"     # system_fig8_{150,200,300}m.yaml
     sim_time: "default"                  # seconds, or "default" for the project's own sim_time
-    plots: "pattern,path_3d,time_series,power"         # subset, or "none"
+    plots: "pattern,path_3d,time_series,power"  # subset, or "none"
     wind_speed: 10.0
