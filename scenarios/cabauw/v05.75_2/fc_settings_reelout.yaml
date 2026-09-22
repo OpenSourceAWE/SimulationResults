@@ -69,7 +69,7 @@ fc_settings:
   heading_i:          false    # Integral time [s], or false for no integral action
   heading_d:          0.12     # Derivative time [s]
   heading_d_n:        2.0      # Derivative filter, max gain of the D path          [-]
-  ff_gain:            0.7      # Curvature feed-forward, u_ff = psi_dot_path/(c1 v_app); 0 = off [-]
+  ff_gain:            0.0      # Curvature feed-forward, u_ff = psi_dot_path/(c1 v_app); 0 = off [-]
   ff_lead_time:       0.35     # Read the path's course rate this far ahead of Q; ~the dead time [s]
   ff_smooth:          6.0      # Arc the tangent change is averaged over               [deg]
   ff_tau:             0.2      # Low-pass on u_ff and the chord correction; 0 = none    [s]
