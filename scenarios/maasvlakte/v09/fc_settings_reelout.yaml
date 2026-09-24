@@ -50,21 +50,17 @@ fc_settings:
   # --- pattern geometry; a SMALLER lemniscate is a TIGHTER one --------------
   f8_a:               20.0     # Width of the eight, azimuth spans ±A; sweep optimum [deg]
   f8_b:               11.0     # Height, elevation spans ±B/2; picked for margin 1.07 [deg]
-  f8_c:               0.0      # Size of the right part                           [deg]
-  f8_d:               0.0      # Asymmetry factor                                   [-]
   el_center:          18.0     # Centre elevation; lower turns easier, costs energy [deg]
   attractor_dist:      6.0     # Arc distance Q -> attractor; the FLOOR under a lead time [deg]
-  attractor_lead_time: 0.8     # Lead as flight time, arc = t*v_app/L; 6° at 6 m/s, 8.5° at 10; 0 = off [s]
-  attractor_dist_max:  0.0     # Ceiling on that arc; 0 = 2 x attractor_dist        [deg]
+  attractor_lead_time: 0.8     # Lead as flight time, arc = t*v_app/L; 6° at 6 m/s wind, 8.5° at 10 m/s wind (lap 1); 0 = off [s]
   reacquire_margin:    6.0     # Global best must beat the in-window best by this  [deg]
   up_loops:           false    # Up-loops instead of down-loops; down crosses the centre
-  el_offset_final:     3.0     # Extra lift of the path once reel-out ends       [deg]
+  el_offset_final:     1.0     # Extra lift of the path once reel-out ends       [deg]
   el_offset_lead:      8.0     # How early the lift starts; gets it past the phase-5 gate [s]
-  el_offset_wing:      1.5     # Extra lift at the LOBES, none in the centre       [deg]
+  el_offset_wing:      1.0     # Extra lift at the LOBES, none in the centre       [deg]
   el_offset_wing_az:  10.0     # |azimuth| beyond which that lift is full   [deg or fraction of A]
   el_offset_wing_blend: 8.0    # Ramp width below it; NOT monotone, see the docstring  [same units]
-  el_offset_wing_mode: "azimuth"  # azimuth (deg) | azimuth_frac (of the path's own A) | elevation
-  el_offset_wing_depth: 0.0    # elevation mode: depth where it starts, in half-spans; 1 = the bottom [-]
+  el_offset_wing_mode: "azimuth"  # azimuth (deg) | azimuth_frac (of the path's own A)
 
   # --- heading/course PID ---------------------------------------------------
   heading_p:          0.1891   # Gain at v_app_ref; only their product is physical   [-]
@@ -75,7 +71,7 @@ fc_settings:
   ff_lead_time:       0.35     # Read the path's course rate this far ahead of Q; ~the dead time [s]
   ff_smooth:          6.0      # Arc the tangent change is averaged over               [deg]
   ff_tau:             0.2      # Low-pass on u_ff and the chord correction; 0 = none    [s]
-  ff_d_fade:          9.0      # Cross-track error at which the ff is fully off; fades from half [deg]
+  ff_d_fade:          6.0      # Cross-track error at which the ff is fully off; fades from half [deg]
   ff_err_fade:        60.0     # Course error at which the ff is fully off; fades from half  [deg]
   v_app_ref:          27.0     # Speed flown in phase 3; anchors the gain schedule [m/s]
   v_app_min:          10.0     # Lower clamp on v_app, limits the gain boost      [m/s]
@@ -96,7 +92,7 @@ fc_settings:
 
   # --- guards and metrics ---------------------------------------------------
   entry_f_min:        350.0    # Force floor of the entry guard, phases 0-2; not wc's f_low [N]
-  first_lap_force_frac: 0.9375 # f_high x this in lap 1 AND for the startup solve: 7500 N, = f_high_awe_trim [-]
+  first_lap_force_frac: 0.93   # f_high x this in lap 1 AND for the startup solve; 1.0 = no lap-1 de-rating [-]
   v_app_abort:        55.0     # Stop the run above this apparent wind speed      [m/s]
   entry_time:         62.0     # Settle time after park_time before the metrics     [s]
   min_elevation:       6.5     # Floor criterion over the WHOLE run; also the reopt install gate [deg]
