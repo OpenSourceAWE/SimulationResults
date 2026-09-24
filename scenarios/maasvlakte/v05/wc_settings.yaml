@@ -24,6 +24,7 @@ wc_settings:
   winch_speed_ti:     2.0    # Inner speed-loop integral time [s]; larger = weaker
   winch_torque_limit: 500.0  # Saturation of the inner loop's torque correction [N*m]
   winch_ff_scale:     1.0    # Force feed-forward [-]; 1.0 is a perfectly stiff drum
+  winch_acc_ff:       1.0    # Acceleration feed-forward J*a*G/r [-]; 0.0 = off
 
   # --- TORQUE: force mode; unused here, at compliance > 0 fc_settings.yaml supplies these via winch_force_gains
   winch_force_tau:  10.0     # Reference-force low-pass time constant [s]
@@ -56,8 +57,8 @@ wc_settings:
   ktf_low:       8.0       # tracking constant, lower force controller          [-]
   f_low:         700.0     # below: LowerForceController reels in; overridden per wind speed by winch_kv_table.yaml [N]
   f_reelin:      700.0     # set force during a plain reel-in phase (unused here) [N]
-  f_high:        7900.0    # upper limit, < max_force (8400); x first_lap_force_frac = the startup solve's f_max [N]
-  f_high_awe_trim: 7500.0  # fixed f_high sent to AWETrim for re-optimizations; 0.0 = plain f_high [N]
+  f_high:        7200.0    # upper limit, < max_force (8400); x first_lap_force_frac = the startup solve's f_max [N]
+  f_high_awe_trim: 7200.0  # fixed f_high sent to AWETrim for re-optimizations; 0.0 = plain f_high [N]
   pf_high:       0.00023040 # P constant of the upper force controller          [-]
   if_high:       0.012     # I constant of the upper force controller           [-]
   df_high:       0.000034  # D constant of the upper force controller           [-]
@@ -74,6 +75,7 @@ wc_settings:
   force_limit:      "soft" # "soft" (optimizer's tension curve) | "hard" (two limiters); winch_kv_table.yaml overrides
   softplus_beta:    0.001  # corner sharpness of the UPPER limit; larger = sharper [1/N]
   softminus_beta:   0.03   # corner sharpness of the LOWER limit, local law only; AWETrim is pinned to 1e-3 [1/N]
+  v_sat_beta:       10.0   # corner sharpness of the v_sat clamp; .inf = hard clamp [s/m]
   soft_lfc:         true   # also replace the LowerForceController with a reel-in line
   v_reel_in:        -2.0   # reel-in speed at zero force [m/s]
   reel_in_beta:     20.0   # sharpness of the line/curve handover; needs * kv * sqrt(f_low) >= 8 everywhere [s/m]
