@@ -36,6 +36,7 @@ fc_settings:
   reelout_softstop:   1.5      # Linear decel trigger at the far end               [s]
   reelout_delay:      4.2      # Wait after phase 3 before reel-out starts          [s]
   reelout_f_trigger:  6400.0   # Force that releases reel-out EARLY; Inf disables it [N]
+  final_time:         30.0     # Sim time flown in phase 5 before the run ends; Inf = full run [s]
 
   # --- entry state machine: park -> dive -> hold -> transition --------------
   chi_dive:          -135.0    # Dive course; >90 descends, <90 climbs, 90 flat    [deg]
@@ -52,11 +53,12 @@ fc_settings:
   f8_b:               11.0     # Height, elevation spans ±B/2; picked for margin 1.07 [deg]
   el_center:          18.0     # Centre elevation; lower turns easier, costs energy [deg]
   attractor_dist:      6.0     # Arc distance Q -> attractor; the FLOOR under a lead time [deg]
-  attractor_lead_time: 0.8     # Lead as flight time, arc = t*v_app/L; 6° at 6 m/s wind, 8.5° at 10 m/s wind (lap 1); 0 = off [s]
+  attractor_lead_time: 0.88    # Lead as flight time, arc = t*v_app/L; ω_g below the course loop, disk margin 0.30 (2026-09-26); 0 = off [s]
   reacquire_margin:    6.0     # Global best must beat the in-window best by this  [deg]
   up_loops:           false    # Up-loops instead of down-loops; down crosses the centre
   el_offset_final:     1.0     # Extra lift of the path once reel-out ends       [deg]
   el_offset_lead:      8.0     # How early the lift starts; gets it past the phase-5 gate [s]
+  final_margin_min:    1.5     # Phase-5 path below this curvature margin falls back to an earlier install; 0 = off [-]
   el_offset_wing:      1.0     # Extra lift at the LOBES, none in the centre       [deg]
   el_offset_wing_az:  10.0     # |azimuth| beyond which that lift is full   [deg or fraction of A]
   el_offset_wing_blend: 8.0    # Ramp width below it; NOT monotone, see the docstring  [same units]
@@ -65,7 +67,7 @@ fc_settings:
   # --- heading/course PID ---------------------------------------------------
   heading_p:          0.1891   # Gain at v_app_ref; only their product is physical   [-]
   heading_i:          false    # Integral time [s], or false for no integral action
-  heading_d:          0.12     # Derivative time [s]
+  heading_d:          0.126    # Derivative time; +5 % with the lead time for the guided disk margin [s]
   heading_d_n:        2.0      # Derivative filter, max gain of the D path          [-]
   ff_gain:            0.7      # Curvature feed-forward, u_ff = psi_dot_path/(c1 v_app); 0 = off [-]
   ff_lead_time:       0.35     # Read the path's course rate this far ahead of Q; ~the dead time [s]
