@@ -927,7 +927,7 @@ paths:
       - 19.635
       - 19.685
       - 19.816
-    installed_t: 30.56
+    installed_t: 30.47
     installed_phase: 4
   - azimuth:
       - 0.516
@@ -1131,7 +1131,7 @@ paths:
       - 22.717
       - 23.189
       - 23.64
-    installed_t: 43.38
+    installed_t: 43.29
     installed_phase: 4
   - azimuth:
       - 4.437
@@ -1335,7 +1335,7 @@ paths:
       - 25.136
       - 25.612
       - 26.049
-    installed_t: 58.48
+    installed_t: 58.42
     installed_phase: 4
   - azimuth:
       - -4.879
@@ -1539,5 +1539,5 @@ paths:
       - 21.636
       - 21.752
       - 21.912
-    installed_t: 84.18
+    installed_t: 84.17
     installed_phase: 4
