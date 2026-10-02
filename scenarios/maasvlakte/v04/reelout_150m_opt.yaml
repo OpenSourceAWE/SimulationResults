@@ -5,26 +5,26 @@ simulation:
   project: "system_reelout_maasvlakte.yaml" # system project flown
   rel_turbulence: 0.0               # turbulence level in [0, 1] passed to init
   wind_speed: 4.0                   # mean wind speed in m/s passed to init
-  time: "18:42:00"                  # wall-clock time the run finished
-  date: "2026-09-30"                # wall-clock date the run finished
+  time: "17:29:42"                  # wall-clock time the run finished
+  date: "2026-10-02"                # wall-clock date the run finished
   hostname: "ufryzen"               # machine the run executed on
-  git_hash: "b1184cf"               # SimpleKiteControllers.jl commit hash
+  git_hash: "510153c"               # SimpleKiteControllers.jl commit hash
   git_status: "clean"               # SimpleKiteControllers.jl working tree: clean or dirty
 fig8_metrics:
-  settled_from: 25.4                # sim time the scoring window begins [s]
-  settle_time: 23.4                 # time after t_start to converge [s]
+  settled_from: 25.3                # sim time the scoring window begins [s]
+  settle_time: 23.3                 # time after t_start to converge [s]
   laps: 6.0                         # figure-eight laps completed
   lap_time:
-    fastest: 27.4                   # shortest time for one full figure of eight — lap 1, starting at t = 26.1 s [s]
+    fastest: 27.5                   # shortest time for one full figure of eight — lap 1, starting at t = 26.0 s [s]
     mean: 33.8                      # mean time per full figure of eight, over 6 laps [s]
-    slowest: 40.1                   # longest time for one full figure of eight — lap 6 [s]
+    slowest: 40.5                   # longest time for one full figure of eight — lap 6 [s]
   cross_track_deg:
-    rms: 1.13                       # RMS cross-track error vs the unlifted optimizer path [deg]
-    mean: 1.01                      # mean cross-track error vs the unlifted optimizer path [deg]
+    rms: 1.14                       # RMS cross-track error vs the unlifted optimizer path [deg]
+    mean: 1.02                      # mean cross-track error vs the unlifted optimizer path [deg]
     max: 4.99                       # max cross-track error vs the unlifted optimizer path [deg]
   elevation_deg:
-    min_settled: 8.7                # min elevation, settled window [deg]
-    min_whole_run: 8.7              # min elevation, whole run [deg]
+    min_settled: 8.8                # min elevation, settled window [deg]
+    min_whole_run: 8.8              # min elevation, whole run [deg]
   peak_turn_rate_deg_s: 64          # peak heading rate [deg/s]
   extent:
     azimuth_deg:
@@ -35,19 +35,19 @@ fig8_metrics:
       max: 100                      # positive reach as % of the pattern's ±A
     worst_lobe_deg:
       min: -18.3                    # weakest lobe, negative side [deg]
-      max: 16.8                     # weakest lobe, positive side [deg]
-    elevation_span_deg: 23.5        # flown elevation span over the whole settled window — the pattern DESCENDS as the tether grows, so this is mostly that descent [deg]
+      max: 17.0                     # weakest lobe, positive side [deg]
+    elevation_span_deg: 23.4        # flown elevation span over the whole settled window — the pattern DESCENDS as the tether grows, so this is mostly that descent [deg]
     elevation_span_lap_deg: 9.9     # flown elevation span per lobe, which is the pattern's own height [deg]
     elevation_span_pct_of_b: 98     # flown span as % of the B commanded where it was flown
   tether_force_N:
-    mean: 1147                      # mean tether force, settled window [N]
-    std: 206                        # std tether force, settled window [N]
-    cv_pct: 18.0                    # coefficient of variation [%]
+    mean: 1148                      # mean tether force, settled window [N]
+    std: 205                        # std tether force, settled window [N]
+    cv_pct: 17.9                    # coefficient of variation [%]
   steering:
     peak_abs_u_s: 0.32              # peak |rel_steering| commanded
-    pct_time_within_2pct_of_peak: 10 # % of time within 2% of peak (saturation)
-    hf_std_steering: 0.0082         # high-frequency std of steering (chatter)
-    hf_std_turnrate_deg_s: 0.21     # high-frequency std of heading rate [deg/s]
+    pct_time_within_2pct_of_peak: 11 # % of time within 2% of peak (saturation)
+    hf_std_steering: 0.0083         # high-frequency std of steering (chatter)
+    hf_std_turnrate_deg_s: 0.2      # high-frequency std of heading rate [deg/s]
   tape:
     delivered_peak_abs_u_s: 0.32    # peak steering the KCU tape delivered
     commanded_peak_abs_u_s: 0.32    # peak steering commanded
@@ -56,12 +56,12 @@ fig8_metrics:
     rate_limit_per_s: 0.2           # KCU's configured rate limit [1/s]
 reelout:
   v_app_phase4:
-    duration: 191.1                 # phase-4 window length [s]
+    duration: 190.7                 # phase-4 window length [s]
     mean_m_s: 12.76                 # mean apparent wind speed [m/s]
-    min_m_s: 10.56                  # min apparent wind speed [m/s]
-    max_m_s: 17.43                  # max apparent wind speed [m/s]
+    min_m_s: 10.57                  # min apparent wind speed [m/s]
+    max_m_s: 17.39                  # max apparent wind speed [m/s]
     v_app_ref_m_s: 27.0             # reference apparent wind speed [m/s]
-    deviation_pct: -52.8            # mean v_app deviation from v_app_ref [%]
+    deviation_pct: -52.7            # mean v_app deviation from v_app_ref [%]
   tether:
     start_m: 150.0                  # tether length at run start [m]
     end_m: 380.0                    # tether length at run end [m]
@@ -69,38 +69,38 @@ reelout:
     stop_reason: "length"           # criterion that ended reel-out: length, laps, or none
     laps_reeled: 6.2                # figure-eight laps completed by the time reel-out ended
   force:
-    cf_force_ro: 1.43               # crest factor: peak / mean tether force over the reeling window
+    cf_force_ro: 1.42               # crest factor: peak / mean tether force over the reeling window
   power:
-    cf_power_ro: 1.72               # crest factor: peak / mean reel-out power over the reeling window
-    duration: 198.7                 # reeling window length [s]
-    n_samples: 17883                # sample count in the reeling window
+    cf_power_ro: 1.71               # crest factor: peak / mean reel-out power over the reeling window
+    duration: 198.3                 # reeling window length [s]
+    n_samples: 17843                # sample count in the reeling window
     energy_kJ: 309.4                # energy over the reeling window [kJ]
-    energy_run_kJ: 300.5            # energy over the whole run [kJ]
+    energy_run_kJ: 300.6            # energy over the whole run [kJ]
   winch_state:
     speed_pct: 100.0                # % of the reeling window in speed control (state 1)
     lower_force_pct: 0.0            # % in the LowerForceController, reeling in (state 0)
     upper_force_pct: 0.0            # % in the UpperForceController, force capped at f_high (state 2)
-    n_samples: 17883                # sample count in the reeling window
+    n_samples: 17843                # sample count in the reeling window
   ringing:
     n_peaks: 3                      # ring peaks detected above peak_floor
-    period: 8.35                    # mean peak-to-peak ring period [s]
-    zeta: -0.029                    # damping ratio from the peak log decrement
-    overshoot_m_s: 0.06             # first ring peak's amplitude above the local trend [m/s]
+    period: 8.34                    # mean peak-to-peak ring period [s]
+    zeta: -0.028                    # damping ratio from the peak log decrement
+    overshoot_m_s: 0.07             # first ring peak's amplitude above the local trend [m/s]
     duration: 20.0                  # time until the ring decays below settle_frac of overshoot_m_s [s]
     peak_v_reelout_m_s: 1.51        # raw v_reelout max within ring_span [m/s]
     steady_v_reelout_m_s: 1.32      # mean v_reelout after ring_span [m/s]
 traj_opt:
   power:
-    predicted_W: 1460               # predicted mean reel-out power of the paths actually flown, weighted by their share of the reeling window [W]
+    predicted_W: 1463               # predicted mean reel-out power of the paths actually flown, weighted by their share of the reeling window [W]
     predicted_initial_W: 1185       # predicted mean reel-out power of the path installed before the run [W]
     predicted_paths:
       t_000.0_s: 1185               # 18% of the reeling window
-      t_053.5_s: 1295               # 16% of the reeling window
-      t_084.4_s: 1473               # 16% of the reeling window
-      t_117.1_s: 1576               # 17% of the reeling window
-      t_151.6_s: 1619               # 19% of the reeling window
-      t_188.6_s: 1619               # 14% of the reeling window
-    measured_W: 1557                # mean reel-out power the run harvested [W]
+      t_053.4_s: 1298               # 16% of the reeling window
+      t_084.3_s: 1478               # 16% of the reeling window
+      t_116.7_s: 1580               # 17% of the reeling window
+      t_151.2_s: 1621               # 19% of the reeling window
+      t_188.0_s: 1621               # 14% of the reeling window
+    measured_W: 1561                # mean reel-out power the run harvested [W]
     ratio: 1.07                     # measured / predicted, against the weighted prediction
   guess:
     a_deg: 30.0                     # width of the guess lemniscate; azimuth spans ±a [deg]
@@ -111,23 +111,23 @@ traj_opt:
     depower_seed_m: 1.6             # power-tape length the solve started from, input_depower ramped with the wind above input_depower_wind_ref; only a seed, the server optimizes it [m]
     depower_optimized:
       t_000.0_s: 1.538              # optimizer's l_dp [m]; rel_depower equivalent 0.289 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
-      t_053.5_s: 1.529              # optimizer's l_dp [m]; rel_depower equivalent 0.287 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
-      t_084.4_s: 1.508              # optimizer's l_dp [m]; rel_depower equivalent 0.283 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
-      t_117.1_s: 1.498              # optimizer's l_dp [m]; rel_depower equivalent 0.281 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
-      t_151.6_s: 1.491              # optimizer's l_dp [m]; rel_depower equivalent 0.279 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
-      t_188.6_s: 1.486              # optimizer's l_dp [m]; rel_depower equivalent 0.278 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
+      t_053.4_s: 1.528              # optimizer's l_dp [m]; rel_depower equivalent 0.287 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
+      t_084.3_s: 1.508              # optimizer's l_dp [m]; rel_depower equivalent 0.283 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
+      t_116.7_s: 1.497              # optimizer's l_dp [m]; rel_depower equivalent 0.280 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
+      t_151.2_s: 1.491              # optimizer's l_dp [m]; rel_depower equivalent 0.279 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
+      t_188.0_s: 1.486              # optimizer's l_dp [m]; rel_depower equivalent 0.278 (awetrim_depower_to_v3kite), against the flown depower_setpoint = 0.274
     depower_optimized_rel:
       t_000.0_s: 0.2886             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
-      t_053.5_s: 0.2867             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
-      t_084.4_s: 0.2826             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
-      t_117.1_s: 0.2806             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
-      t_151.6_s: 0.2791             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
-      t_188.6_s: 0.2783             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
+      t_053.4_s: 0.2865             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
+      t_084.3_s: 0.2826             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
+      t_116.7_s: 0.2804             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
+      t_151.2_s: 0.2791             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
+      t_188.0_s: 0.2782             # the same reply as V3Kite rel_depower, converted with the AWETRIM_V3KITE_DEPOWER_OFFSET in force at run time; what a replot's u_d panel draws [-]
     k_v_optimized:
   path:
     points: 360                     # points of the path installed before the run
     points_final: 360               # points of the path at the end; differs when reopt installed one
-    az_center_deg: 0.0              # centre azimuth of the path [deg]
+    az_center_deg: -0.0             # centre azimuth of the path [deg]
     az_amplitude_deg: 25.4          # half-width of the STARTUP path; the criteria are scored against the pattern commanded at each lap, whose mean is lift_budget's reference [deg]
     el_center_deg: 26.8             # centre elevation of the path [deg]
     el_height_deg: 14.6             # elevation span of the path, peak to peak [deg]
@@ -136,76 +136,76 @@ traj_opt:
   feasibility:
     min_required: 0.82              # min_feasibility_margin of data/traj_opt.yaml [-]
     turn_radius_headroom: 1.25      # factor on the gate's number for what the GATE adds: its finite-difference curvature estimate and the elevation lift [-]
-    turn_radius_request_m: 14.03    # minimum turn radius asked of the optimizer for the LAST request; the gate's margin/(c1*max_steering) times the headroom and the lap's reel-out ratio, since the optimizer measures the radius up the reel-out while the run flies the curve at the anchor [m]
-    turn_radius_scale: 1.406        # the two corrections together, as sent [-]
+    turn_radius_request_m: 13.62    # minimum turn radius asked of the optimizer for the LAST request; the gate's margin/(c1*max_steering) times the headroom and the lap's reel-out ratio, since the optimizer measures the radius up the reel-out while the run flies the curve at the anchor [m]
+    turn_radius_scale: 1.407        # the two corrections together, as sent [-]
     turn_radius_lap_reelout_m: 0.0  # reel-out per lap ASSUMED for the startup request, the only one with no reply to measure it off [m]
-    c1_pattern: 0.2469              # turn-rate gain the startup gate and requests read the path at: at the depower the pattern is FLOWN at (the optimizer's own under fly_opt_depower), not depower_setpoint's [1/m]
-    gain_scale_flown: 1.08          # heading_p factor phases 3-4 flew with, c1(depower_setpoint)/c1(flown) for the startup reply; 1.0 when the optimizer's depower is the setpoint [-]
-    margin_start: 1.13              # curvature margin at the starting length; the worst case only when one path is flown throughout — see the docstring [-]
-    margin_end: 2.86                # curvature margin at reelout_l_max [-]
+    c1_pattern: 0.2507              # turn-rate gain the startup gate and requests read the path at: at the depower the pattern is FLOWN at (the optimizer's own under fly_opt_depower), not depower_setpoint's [1/m]
+    gain_scale_flown: 1.099         # heading_p factor phases 3-4 flew with, c1(depower_setpoint)/c1(flown) for the startup reply; 1.0 when the optimizer's depower is the setpoint [-]
+    margin_start: 1.14              # curvature margin at the starting length; the worst case only when one path is flown throughout — see the docstring [-]
+    margin_end: 2.89                # curvature margin at reelout_l_max [-]
     c1_final: 0.166                 # turn-rate gain at depower_final [1/m]
-    margin_final: 1.88              # curvature margin phase 5 flies with: depower_final's c1, at reelout_l_max, on the STARTING path lifted by el_offset_final [-]
-    margin_final_flown: 0.76        # the same, for the last path the re-optimizer installed — the one phase 5 actually inherited [-]
-    final_fallback_t: 235.9         # when phase 5's path fell back to an earlier install (final_margin_min) [s]
-    final_fallback_to_t: 53.5       # install time of the path it fell back to; 0 = the startup path [s]
-    margin_final_fallback: 1.72     # phase-5 margin of that path, carrying the current lift: the one phase 5 flies [-]
+    margin_final: 1.87              # curvature margin phase 5 flies with: depower_final's c1, at reelout_l_max, on the STARTING path lifted by el_offset_final [-]
+    margin_final_flown: 0.75        # the same, for the last path the re-optimizer installed — the one phase 5 actually inherited [-]
+    final_fallback_t: 235.7         # when phase 5's path fell back to an earlier install (final_margin_min) [s]
+    final_fallback_to_t: 53.4       # install time of the path it fell back to; 0 = the startup path [s]
+    margin_final_fallback: 1.69     # phase-5 margin of that path, carrying the current lift: the one phase 5 flies [-]
   reopt:
     enabled: true                   # re-optimization during the run
     warm_start: true                # /step alone, seeded from the previous optimum; false re-inits from the parametric guess at every length
     requests: 5                     # solves that completed, accepted or rejected
     blocking: true                  # simulation held while a solve ran
-    blocked: 22.6                   # wall time the simulation was frozen waiting for replies [s]
+    blocked: 25.1                   # wall time the simulation was frozen waiting for replies [s]
     cache_hits: 0                   # optimizer steps, startup included, served from the solution or failure cache (OptChain) without asking the server
     cache_misses: 6                 # optimizer steps sent to the server
     cache_rebuilds: 0               # server sessions rebuilt from the cache before a miss
     replayed_from: ""               # scenario whose optimizer results were flown instead of asking the optimizer (`replay_paths`); empty for a normal run
     installed: 5                    # new paths actually flown
     cycle_wall:
-      t_053.5_s: 4.5                # wall time from the first request to the verdict (installed), every retry included, at L = 163 m [s]
-      t_084.4_s: 4.5                # wall time from the first request to the verdict (installed), every retry included, at L = 202 m [s]
-      t_117.1_s: 4.5                # wall time from the first request to the verdict (installed), every retry included, at L = 246 m [s]
-      t_151.6_s: 4.5                # wall time from the first request to the verdict (installed), every retry included, at L = 293 m [s]
-      t_188.6_s: 4.5                # wall time from the first request to the verdict (installed), every retry included, at L = 344 m [s]
+      t_053.4_s: 4.5                # wall time from the first request to the verdict (installed), every retry included, at L = 163 m [s]
+      t_084.3_s: 4.5                # wall time from the first request to the verdict (installed), every retry included, at L = 202 m [s]
+      t_116.7_s: 6.5                # wall time from the first request to the verdict (installed), every retry included, at L = 246 m [s]
+      t_151.2_s: 5.0                # wall time from the first request to the verdict (installed), every retry included, at L = 293 m [s]
+      t_188.0_s: 4.5                # wall time from the first request to the verdict (installed), every retry included, at L = 343 m [s]
     blend_retries: 0                # cold-restart attempts spent on a rejected reply — a folded blend, a collapsed prediction, or a clearance/elevation shortfall re-asked at a raised floor — across every install this run
     events:
-      t_053.5_s: "installed — margin 1.10 (phase 5: 1.72 at 380 m), clearance 49.6 m, size x0.99, 1295 W predicted" # at L = 163 m
-      t_084.4_s: "installed — margin 1.09 (phase 5: 1.34 at 380 m), clearance 55.9 m, size x0.89, 1473 W predicted" # at L = 202 m
-      t_117.1_s: "installed — margin 1.09 (phase 5: 1.08 at 380 m), clearance 62.9 m, size x0.90, 1576 W predicted" # at L = 246 m
-      t_151.6_s: "installed — margin 1.12 (phase 5: 0.93 at 380 m), clearance 70.1 m, size x0.92, 1619 W predicted" # at L = 293 m
-      t_188.6_s: "installed — margin 1.08 (phase 5: 0.76 at 380 m), clearance 77.7 m, size x0.93, 1619 W predicted" # at L = 344 m
+      t_053.4_s: "installed — margin 1.11 (phase 5: 1.69 at 380 m), clearance 49.6 m, size x0.99, 1298 W predicted" # at L = 163 m
+      t_084.3_s: "installed — margin 1.09 (phase 5: 1.31 at 380 m), clearance 55.9 m, size x0.88, 1478 W predicted" # at L = 202 m
+      t_116.7_s: "installed — margin 1.13 (phase 5: 1.10 at 380 m), clearance 62.9 m, size x0.90, 1580 W predicted" # at L = 246 m
+      t_151.2_s: "installed — margin 1.12 (phase 5: 0.90 at 380 m), clearance 70.4 m, size x0.92, 1621 W predicted" # at L = 293 m
+      t_188.0_s: "installed — margin 1.09 (phase 5: 0.75 at 380 m), clearance 77.9 m, size x0.94, 1621 W predicted" # at L = 343 m
   el_lift:
     lift_deg: 1.0                   # el_offset_final, the fixed lift of the path once reel-out ends [deg]
     lift_lead: 8.0                  # el_offset_lead, how early the lift is allowed to latch; 0 = at the end [s]
     wing_deg: 1.0                   # el_offset_wing, extra lift at the lobes, baked into every installed path [deg]
     wing_mode: "azimuth"            # el_offset_wing_mode, the units el_offset_wing_az/_blend are read in
     wing_az_deg: 10.0               # azimuth beyond which that lift is full; it ramps over el_offset_wing_blend below it [deg or fraction of A]
-    lift_t: 206.2                   # when the lift actually latched [s]
+    lift_t: 205.7                   # when the lift actually latched [s]
     lift_remaining_m: 12.8          # reel-out left at that moment; > 0 means the lead fired, 0 means phase 5 did [m]
     shift_delivery:
-      t_206.2_s: "blended in"       # +1.00° of shift, curvature margin 1.14 vs 0.82 required
+      t_205.7_s: "blended in"       # +1.00° of shift, curvature margin 1.17 vs 0.82 required
   droop_profile:
-    az_00_20_pct: 4.21              # kite below the path's elevation centre [deg], over 4931 samples; the path itself sits 0.49 half-spans down there and the kite -1.96° under it
-    az_20_40_pct: 2.99              # kite below the path's elevation centre [deg], over 4209 samples; the path itself sits 0.32 half-spans down there and the kite -1.59° under it
-    az_40_60_pct: 2.39              # kite below the path's elevation centre [deg], over 3846 samples; the path itself sits 0.11 half-spans down there and the kite -1.94° under it
-    az_60_80_pct: 2.71              # kite below the path's elevation centre [deg], over 3253 samples; the path itself sits 0.08 half-spans down there and the kite -2.37° under it
-    az_80_100_pct: 1.35             # kite below the path's elevation centre [deg], over 3658 samples; the path itself sits 0.11 half-spans down there and the kite -1.13° under it
+    az_00_20_pct: 4.25              # kite below the path's elevation centre [deg], over 4951 samples; the path itself sits 0.51 half-spans down there and the kite -1.96° under it
+    az_20_40_pct: 3.0               # kite below the path's elevation centre [deg], over 4163 samples; the path itself sits 0.34 half-spans down there and the kite -1.58° under it
+    az_40_60_pct: 2.41              # kite below the path's elevation centre [deg], over 3803 samples; the path itself sits 0.12 half-spans down there and the kite -1.94° under it
+    az_60_80_pct: 2.68              # kite below the path's elevation centre [deg], over 3277 samples; the path itself sits 0.07 half-spans down there and the kite -2.39° under it
+    az_80_100_pct: 1.43             # kite below the path's elevation centre [deg], over 3667 samples; the path itself sits 0.13 half-spans down there and the kite -1.15° under it
     centre_to_lobe_deg: 0.0         # how much deeper the kite flies in its worst azimuth band than in the crossing — what a SHAPED lift is aimed at, where el_offset_final can only move the pattern rigidly [deg]
   lift_budget:
     delivered_deg: 1.0              # rigid lift the path in the air actually carries — el_offset_final once it has been delivered [deg]
-    commanded_az_amp_deg: 21.64     # mean half-width the run was COMMANDED to fly, against the startup path's in traj_opt.path [deg]
-    commanded_el_height_deg: 9.68   # mean commanded pattern height [deg]
+    commanded_az_amp_deg: 21.6      # mean half-width the run was COMMANDED to fly, against the startup path's in traj_opt.path [deg]
+    commanded_el_height_deg: 9.6    # mean commanded pattern height [deg]
     wing_deg: 1.0                   # el_offset_wing, the fixed lobe lift baked into every installed path [deg]
-    el_min_run_deg: 8.7             # lowest elevation over the whole run — usually set in PHASE 5 at 4 m/s and up, so el_offset_final does move it; the entry sets it below that [deg]
-    el_min_final_deg: 8.71          # lowest elevation in phase 5, which is what el_offset_final buys [deg]
-    azimuth_reach_pos_deg: 6.44     # reach margin: flew 21.59° against the 15.15° required by min_span_frac = 0.70, +43 %
-    azimuth_reach_neg_deg: 5.84     # reach margin: flew 20.99° against the 15.15° required by min_span_frac = 0.70, +39 %
-    elevation_span_deg: 2.67        # reach margin: flew 9.44° against the 6.77° required by min_span_frac = 0.70, +39 %
-    tightest: "elevation span"      # the size criterion with the least room, +2.67° (+39 %) — what the NEXT lift has to spend
+    el_min_run_deg: 8.8             # lowest elevation over the whole run — usually set in PHASE 5 at 4 m/s and up, so el_offset_final does move it; the entry sets it below that [deg]
+    el_min_final_deg: 8.76          # lowest elevation in phase 5, which is what el_offset_final buys [deg]
+    azimuth_reach_pos_deg: 6.49     # reach margin: flew 21.61° against the 15.12° required by min_span_frac = 0.70, +43 %
+    azimuth_reach_neg_deg: 5.89     # reach margin: flew 21.01° against the 15.12° required by min_span_frac = 0.70, +39 %
+    elevation_span_deg: 2.68        # reach margin: flew 9.40° against the 6.72° required by min_span_frac = 0.70, +40 %
+    tightest: "elevation span"      # the size criterion with the least room, +2.68° (+40 %) — what the NEXT lift has to spend
   clearance:
     path_min_m: 50.0                # lowest point of the PRE-FLIGHT path at the starting length [m]
-    flown_min_m: 24.6               # lowest point the kite actually reached over the run [m]
+    flown_min_m: 24.9               # lowest point the kite actually reached over the run [m]
     min_required_m: 40.0            # min_height of data/traj_opt.yaml [m]
-    elevation_min_asked_deg: 11.9   # elevation floor the LAST request carried, the higher of asind(min_height/L) and min_elevation + candidate_elevation_margin at the length it was made for; the optimizer constrains HEIGHT, and only at the far end of the lap's reel-out [deg]
+    elevation_min_asked_deg: 11.96  # elevation floor the LAST request carried, the higher of asind(min_height/L) and min_elevation + candidate_elevation_margin at the length it was made for; the optimizer constrains HEIGHT, and only at the far end of the lap's reel-out [deg]
     elevation_min_extra_deg: 0.0    # raise a rejected reply's shortfall added to that floor, carried forward once measured; 0 means no reply was gated out low [deg]
   inflow:
     wind_speed_m_s: 4.0             # wind speed at 6 m sent to the optimizer [m/s]
@@ -219,38 +219,38 @@ traj_opt:
     f_max_N: 7200.0                 # maximum winch force sent [N]
     force_limit: "soft"             # the reel-out law itself limits the force, inverting the optimizer's own saturating tension curve (beta 3e-02/1e-03, force filtered at tau = 1.00 s); the UpperForceController is held in reset, so upper_force_pct is 0 by construction
 performance:
-  sim_time: 247.1                   # simulated time [s]
-  wall_time: 62.8                   # wall-clock time [s]
-  total_wall_time: 97.6             # the whole script: package loading, init, settling, the startup solve and the run, up to this summary — the archive copy and any plots follow it [s]
-  optimization_time: 30.9           # wall time waiting for the optimizer: the startup solve (8.3 s) plus every blocking re-optimization (traj_opt.reopt.blocked) [s]
-  max_optimization_time: 8.3        # longest wall time to compute a new figure of eight, retries included: the startup solve; the slowest re-optimization took 4.5 s [s]
-  realtime_factor: 6.15             # sim_time / wall_time, excluding time frozen for re-optimization
-  ms_per_step: 1.8                  # wall time per step, excluding time frozen for re-optimization [ms]
-  steps: 22241                      # step count
+  sim_time: 246.6                   # simulated time [s]
+  wall_time: 72.0                   # wall-clock time [s]
+  total_wall_time: 88.4             # the whole script: package loading, init, settling, the startup solve and the run, up to this summary — the archive copy and any plots follow it [s]
+  optimization_time: 33.5           # wall time waiting for the optimizer: the startup solve (8.4 s) plus every blocking re-optimization (traj_opt.reopt.blocked) [s]
+  max_optimization_time: 8.4        # longest wall time to compute a new figure of eight, retries included: the startup solve; the slowest re-optimization took 6.5 s [s]
+  realtime_factor: 5.26             # sim_time / wall_time, excluding time frozen for re-optimization
+  ms_per_step: 2.1                  # wall time per step, excluding time frozen for re-optimization [ms]
+  steps: 22197                      # step count
   dt: 0.011111111111111112          # simulation timestep [s]
-  vsm_interval: 10                  # VSM aerodynamic update interval [steps]
+  vsm_interval: 5                   # VSM aerodynamic update interval [steps]
 summary:
-  date: "2026-09-30"                # wall-clock date the run finished
-  time: "18:42:00"                  # wall-clock time the run finished
+  date: "2026-10-02"                # wall-clock date the run finished
+  time: "17:29:42"                  # wall-clock time the run finished
   wind_speed_gnd: 4.0               # wind speed at 6 m sent to the optimizer [m/s]
   power_ratio: 1.07                 # measured / predicted reel-out power [-]
   success_criteria: "all 10 passed" # pass/fail verdict vs V3Kite's success criteria
-  cross_track_rms_deg: 1.13         # RMS cross-track error, settled window [deg]
-  total_wall_time: 97.6             # the whole script, start to this summary [s]
-  realtime_factor: 6.15             # sim_time / wall_time, excluding time frozen for re-optimization
+  cross_track_rms_deg: 1.14         # RMS cross-track error, settled window [deg]
+  total_wall_time: 88.4             # the whole script, start to this summary [s]
+  realtime_factor: 5.26             # sim_time / wall_time, excluding time frozen for re-optimization
   optimization_requests: 5          # solves that completed, accepted or rejected
   optimizations_installed: 5        # new paths actually flown
-  fastest_fig8: 27.4                # shortest time for flying one full figure of eight [s]
-  max_optimization_time: 8.3        # longest wall time to compute a new figure of eight, retries included [s]
-  av_power_ro: 1588                 # mean reel-out power over phase four [W]
-  min_power_ro: 801                 # min reel-out power over phase four, last 2 s excluded [W]
-  max_power_ro: 2675                # max reel-out power over phase four [W]
-  min_force_ro: 963                 # min tether force over phase four, last 2 s excluded [N]
-  av_force_ro: 1201                 # mean tether force over phase four [N]
-  max_force_ro: 1705                # max tether force over phase four [N]
-  v_ro_min: 0.82                    # min reel-out speed over phase four, last 2 s excluded [m/s]
+  fastest_fig8: 27.5                # shortest time for flying one full figure of eight [s]
+  max_optimization_time: 8.4        # longest wall time to compute a new figure of eight, retries included [s]
+  av_power_ro: 1591                 # mean reel-out power over phase four [W]
+  min_power_ro: 805                 # min reel-out power over phase four, last 2 s excluded [W]
+  max_power_ro: 2667                # max reel-out power over phase four [W]
+  min_force_ro: 966                 # min tether force over phase four, last 2 s excluded [N]
+  av_force_ro: 1202                 # mean tether force over phase four [N]
+  max_force_ro: 1703                # max tether force over phase four [N]
+  v_ro_min: 0.83                    # min reel-out speed over phase four, last 2 s excluded [m/s]
   v_ro_av: 1.31                     # mean reel-out speed over phase four [m/s]
   v_ro_max: 1.61                    # max reel-out speed over phase four [m/s]
   av_depower_ro: 0.283              # mean KCU depower over phase four [-]
   max_depower_final: 0.35           # highest depower the force limiter asked for, from the stop latch through phase 5; the phase-5 floor itself when it never engaged or is off (depower_final_max == depower_final) [-]
-  gain_scale_final_peak: 1.605      # heading_p factor phase 5 flew with at the limiter's peak, c1(depower_setpoint)/c1(flown), read at 0.35 [-]
+  gain_scale_final_peak: 1.661      # heading_p factor phase 5 flew with at the limiter's peak, c1(depower_setpoint)/c1(flown), read at 0.35 [-]
