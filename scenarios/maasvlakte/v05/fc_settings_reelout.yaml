@@ -57,8 +57,9 @@ fc_settings:
     # scenarios 0.332 -> 0.401 (weak winds, where this floor sets the attractor); replays at
     # maasvlakte 3.5/8.0 and cabauw 3.0 m/s pass all criteria, RMS d +20 - 29 %, power unchanged.
     attractor_dist:      9.75    # Arc distance Q -> attractor; the FLOOR under a lead time [deg]
-    # attractor_lead_time: ω_g below the course loop, guided disk margin >= 0.30 with c3 (2026-09-28).
-    attractor_lead_time: 0.96    # Lead as flight time, arc = t*v_app/L; 0 = off   [s]
+    # attractor_lead_time: ω_g below the course loop, guided disk margin >= 0.30 with c3 (2026-09-28);
+    # 0.96 -> 1.05 (2026-10-03): Cabauw 10 m/s guided disk margin 0.477 -> 0.534, RMS cross-track error 1.27 -> 1.21°.
+    attractor_lead_time: 1.05    # Lead as flight time, arc = t*v_app/L; 0 = off   [s]
     reacquire_margin:    6.0     # Global best must beat the in-window best by this  [deg]
     up_loops:           false    # Up-loops instead of down-loops; down crosses the centre
 
@@ -87,6 +88,17 @@ fc_settings:
     el_offset_wing_az:  10.0     # |azimuth| beyond which that lift is full   [deg or fraction of A]
     el_offset_wing_blend: 8.0    # Ramp width below it; NOT monotone, see the docstring  [same units]
     el_offset_wing_mode: "azimuth"  # azimuth (deg) | azimuth_frac (of the path's own A)
+
+  low_wind:  # per wind speed at low_wind_height, linear in between, first row held below; off from the last row on
+    # Flown 2026-10-02, the guided disk margin was 0.41-0.44 at 150 m: Maasvlakte 3.5 m/s (4.51 at 100 m),
+    # Maasvlakte 4 m/s (5.15), Cabauw 3 m/s (5.80); Maasvlakte 5 m/s (6.44) is robust as the files fly it.
+    # The last row is the files' own values: l_tethers, traj_opt's guess_el_center, v_app_min, el_offset_final.
+    low_wind_height:          100.0                      # Height of the wind the schedule is keyed on [m]
+    low_wind_speeds:          [4.51, 5.15, 5.80, 6.40]   # Wind speed at low_wind_height, ascending [m/s]
+    low_wind_l_tether:        [195.0, 195.0, 195.0, 150.0] # Tether length reel-out starts at; less guidance phase lag [m]
+    low_wind_guess_el_center: [25.0, 27.0, 27.0, 29.0]   # Startup guess; 29° at 195 m lands in a 470 W optimum [deg]
+    low_wind_v_app_min:       [8.0, 10.0, 10.0, 10.0]    # Gain-schedule floor; 8 lifts the bins flown at v_a < 10 m/s [m/s]
+    low_wind_el_offset_final: [1.5, 1.0, 1.0, 1.0]       # Phase-5 lift; 1.5 keeps Maasvlakte 3.5 above min_elevation [deg]
 
   run:  # simulation conditions and pass criteria
     vsm_interval:       5        # Steps between VSM aero updates, 1 = tightest; at 10 the identification flights sink at depower 0.375 (2026-10-02) [-]

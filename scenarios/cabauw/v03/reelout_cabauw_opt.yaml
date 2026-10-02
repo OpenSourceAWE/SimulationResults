@@ -5,10 +5,10 @@ simulation:
   project: "system_reelout_cabauw.yaml" # system project flown
   rel_turbulence: "default"         # turbulence level in [0, 1] passed to init
   wind_speed: 3.0                   # mean wind speed in m/s passed to init
-  time: "23:28:32"                  # wall-clock time the run finished
-  date: "2026-10-02"                # wall-clock date the run finished
+  time: "00:47:39"                  # wall-clock time the run finished
+  date: "2026-10-03"                # wall-clock date the run finished
   hostname: "framework"             # machine the run executed on
-  git_hash: "e078191"               # SimpleKiteControllers.jl commit hash
+  git_hash: "185281f"               # SimpleKiteControllers.jl commit hash
   git_status: "dirty"               # SimpleKiteControllers.jl working tree: clean or dirty
 fig8_metrics:
   settled_from: 23.8                # sim time the scoring window begins [s]
@@ -207,28 +207,28 @@ traj_opt:
     force_limit: "soft"             # the reel-out law itself limits the force, inverting the optimizer's own saturating tension curve (beta 3e-02/1e-03, force filtered at tau = 1.00 s); the UpperForceController is held in reset, so upper_force_pct is 0 by construction
 performance:
   sim_time: 183.1                   # simulated time [s]
-  wall_time: 47.6                   # wall-clock time [s]
-  total_wall_time: 56.4             # the whole script: package loading, init, settling, the startup solve and the run, up to this summary — the archive copy and any plots follow it [s]
-  optimization_time: 0.1            # wall time waiting for the optimizer: the startup solve (0.1 s) plus every blocking re-optimization (traj_opt.reopt.blocked) [s]
-  max_optimization_time: 0.1        # longest wall time to compute a new figure of eight, retries included: the startup solve; the slowest re-optimization took 0.0 s [s]
-  realtime_factor: 3.84             # sim_time / wall_time, excluding time frozen for re-optimization
-  ms_per_step: 2.9                  # wall time per step, excluding time frozen for re-optimization [ms]
+  wall_time: 48.7                   # wall-clock time [s]
+  total_wall_time: 58.6             # the whole script: package loading, init, settling, the startup solve and the run, up to this summary — the archive copy and any plots follow it [s]
+  optimization_time: 0.5            # wall time waiting for the optimizer: the startup solve (0.5 s) plus every blocking re-optimization (traj_opt.reopt.blocked) [s]
+  max_optimization_time: 0.5        # longest wall time to compute a new figure of eight, retries included: the startup solve; the slowest re-optimization took 0.0 s [s]
+  realtime_factor: 3.76             # sim_time / wall_time, excluding time frozen for re-optimization
+  ms_per_step: 3.0                  # wall time per step, excluding time frozen for re-optimization [ms]
   steps: 16476                      # step count
   dt: 0.011111111111111112          # simulation timestep [s]
   vsm_interval: 5                   # VSM aerodynamic update interval [steps]
 summary:
-  date: "2026-10-02"                # wall-clock date the run finished
-  time: "23:28:32"                  # wall-clock time the run finished
+  date: "2026-10-03"                # wall-clock date the run finished
+  time: "00:47:39"                  # wall-clock time the run finished
   wind_speed_gnd: 3.0               # wind speed at 6 m sent to the optimizer [m/s]
   power_ratio: 0.95                 # measured / predicted reel-out power [-]
   success_criteria: "all 10 passed" # pass/fail verdict vs V3Kite's success criteria
   cross_track_rms_deg: 1.43         # RMS cross-track error, settled window [deg]
-  total_wall_time: 56.4             # the whole script, start to this summary [s]
-  realtime_factor: 3.84             # sim_time / wall_time, excluding time frozen for re-optimization
+  total_wall_time: 58.6             # the whole script, start to this summary [s]
+  realtime_factor: 3.76             # sim_time / wall_time, excluding time frozen for re-optimization
   optimization_requests: 3          # solves that completed, accepted or rejected
   optimizations_installed: 3        # new paths actually flown
   fastest_fig8: 31.2                # shortest time for flying one full figure of eight [s]
-  max_optimization_time: 0.1        # longest wall time to compute a new figure of eight, retries included [s]
+  max_optimization_time: 0.5        # longest wall time to compute a new figure of eight, retries included [s]
   av_power_ro: 2204                 # mean reel-out power over phase four [W]
   min_power_ro: 1690                # min reel-out power over phase four, last 2 s excluded [W]
   max_power_ro: 3415                # max reel-out power over phase four [W]

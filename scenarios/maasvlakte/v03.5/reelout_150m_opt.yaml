@@ -5,11 +5,11 @@ simulation:
   project: "system_reelout_maasvlakte.yaml" # system project flown
   rel_turbulence: "default"         # turbulence level in [0, 1] passed to init
   wind_speed: 3.5                   # mean wind speed in m/s passed to init
-  time: "23:14:36"                  # wall-clock time the run finished
-  date: "2026-10-02"                # wall-clock date the run finished
+  time: "00:30:36"                  # wall-clock time the run finished
+  date: "2026-10-03"                # wall-clock date the run finished
   hostname: "framework"             # machine the run executed on
-  git_hash: "e078191"               # SimpleKiteControllers.jl commit hash
-  git_status: "dirty"               # SimpleKiteControllers.jl working tree: clean or dirty
+  git_hash: "185281f"               # SimpleKiteControllers.jl commit hash
+  git_status: "clean"               # SimpleKiteControllers.jl working tree: clean or dirty
 fig8_metrics:
   settled_from: 32.1                # sim time the scoring window begins [s]
   settle_time: 30.1                 # time after t_start to converge [s]
@@ -167,7 +167,7 @@ traj_opt:
     replayed_from: ""               # scenario whose optimizer results were flown instead of asking the optimizer (`replay_paths`); empty for a normal run
     installed: 4                    # new paths actually flown
     cycle_wall:
-      t_071.1_s: 0.4                # wall time from the first request to the verdict (installed), every retry included, at L = 208 m [s]
+      t_071.1_s: 0.0                # wall time from the first request to the verdict (installed), every retry included, at L = 208 m [s]
       t_115.2_s: 0.0                # wall time from the first request to the verdict (installed), every retry included, at L = 257 m [s]
       t_163.1_s: 0.0                # wall time from the first request to the verdict (installed), every retry included, at L = 312 m [s]
       t_211.5_s: 0.0                # wall time from the first request to the verdict (installed), every retry included, at L = 367 m [s]
@@ -224,29 +224,29 @@ traj_opt:
     force_limit: "soft"             # the reel-out law itself limits the force, inverting the optimizer's own saturating tension curve (beta 3e-02/1e-03, force filtered at tau = 1.00 s); the UpperForceController is held in reset, so upper_force_pct is 0 by construction
 performance:
   sim_time: 255.1                   # simulated time [s]
-  wall_time: 84.1                   # wall-clock time [s]
-  total_wall_time: 101.2            # the whole script: package loading, init, settling, the startup solve and the run, up to this summary — the archive copy and any plots follow it [s]
-  optimization_time: 0.6            # wall time waiting for the optimizer: the startup solve (0.6 s) plus every blocking re-optimization (traj_opt.reopt.blocked) [s]
-  max_optimization_time: 0.6        # longest wall time to compute a new figure of eight, retries included: the startup solve; the slowest re-optimization took 0.4 s [s]
-  realtime_factor: 3.03             # sim_time / wall_time, excluding time frozen for re-optimization
-  ms_per_step: 3.7                  # wall time per step, excluding time frozen for re-optimization [ms]
+  wall_time: 58.4                   # wall-clock time [s]
+  total_wall_time: 72.1             # the whole script: package loading, init, settling, the startup solve and the run, up to this summary — the archive copy and any plots follow it [s]
+  optimization_time: 0.5            # wall time waiting for the optimizer: the startup solve (0.5 s) plus every blocking re-optimization (traj_opt.reopt.blocked) [s]
+  max_optimization_time: 0.5        # longest wall time to compute a new figure of eight, retries included: the startup solve; the slowest re-optimization took 0.0 s [s]
+  realtime_factor: 4.37             # sim_time / wall_time, excluding time frozen for re-optimization
+  ms_per_step: 2.5                  # wall time per step, excluding time frozen for re-optimization [ms]
   steps: 22961                      # step count
   dt: 0.011111111111111112          # simulation timestep [s]
   vsm_interval: 5                   # VSM aerodynamic update interval [steps]
 summary:
-  date: "2026-10-02"                # wall-clock date the run finished
-  time: "23:14:36"                  # wall-clock time the run finished
+  date: "2026-10-03"                # wall-clock date the run finished
+  time: "00:30:36"                  # wall-clock time the run finished
   wind_speed_gnd: 3.5               # wind speed at 6 m sent to the optimizer [m/s]
   power_ratio: 1.16                 # measured / predicted reel-out power [-]
   power_ratio_free_speed: 1.05      # measured / free_speed reference reel-out power (909 W, an UPPER BOUND over any winch in [f_min, f_max]); above 1 cannot be explained by any winch law [-]
   success_criteria: "all 10 passed" # pass/fail verdict vs V3Kite's success criteria
   cross_track_rms_deg: 1.83         # RMS cross-track error, settled window [deg]
-  total_wall_time: 101.2            # the whole script, start to this summary [s]
-  realtime_factor: 3.03             # sim_time / wall_time, excluding time frozen for re-optimization
+  total_wall_time: 72.1             # the whole script, start to this summary [s]
+  realtime_factor: 4.37             # sim_time / wall_time, excluding time frozen for re-optimization
   optimization_requests: 4          # solves that completed, accepted or rejected
   optimizations_installed: 4        # new paths actually flown
   fastest_fig8: 37.7                # shortest time for flying one full figure of eight [s]
-  max_optimization_time: 0.6        # longest wall time to compute a new figure of eight, retries included [s]
+  max_optimization_time: 0.5        # longest wall time to compute a new figure of eight, retries included [s]
   av_power_ro: 974                  # mean reel-out power over phase four [W]
   min_power_ro: 563                 # min reel-out power over phase four, last 2 s excluded [W]
   max_power_ro: 1955                # max reel-out power over phase four [W]
