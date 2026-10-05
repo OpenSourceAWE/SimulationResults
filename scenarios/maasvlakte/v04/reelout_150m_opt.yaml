@@ -5,10 +5,10 @@ simulation:
   project: "system_reelout_maasvlakte.yaml" # system project flown
   rel_turbulence: 0.0               # turbulence level in [0, 1] passed to init
   wind_speed: 4.0                   # mean wind speed in m/s passed to init
-  time: "18:40:22"                  # wall-clock time the run finished
+  time: "19:55:25"                  # wall-clock time the run finished
   date: "2026-10-05"                # wall-clock date the run finished
   hostname: "ufryzen"               # machine the run executed on
-  git_hash: "7a09700"               # SimpleKiteControllers.jl commit hash
+  git_hash: "d55a783"               # SimpleKiteControllers.jl commit hash
   git_status: "dirty"               # SimpleKiteControllers.jl working tree: clean or dirty
 fig8_metrics:
   settled_from: 29.6                # sim time the scoring window begins [s]
@@ -72,8 +72,8 @@ reelout:
     cf_force_ro: 1.41               # crest factor: peak / mean tether force over the reeling window
   power:
     cf_power_ro: 1.66               # crest factor: peak / mean reel-out power over the reeling window
-    duration: 145.6                 # reeling window length [s]
-    n_samples: 13104                # sample count in the reeling window
+    duration: 145.5                 # reeling window length [s]
+    n_samples: 13098                # sample count in the reeling window
     energy_kJ: 246.3                # energy over the reeling window [kJ]
     energy_run_kJ: 249.6            # energy over the whole run [kJ]
   winch_state:
@@ -91,7 +91,7 @@ reelout:
     steady_v_reelout_m_s: 1.35      # mean v_reelout after ring_span [m/s]
 traj_opt:
   power:
-    predicted_W: 1548               # predicted mean reel-out power of the paths actually flown, weighted by their share of the reeling window [W]
+    predicted_W: 1549               # predicted mean reel-out power of the paths actually flown, weighted by their share of the reeling window [W]
     predicted_initial_W: 1483       # predicted mean reel-out power of the path installed before the run [W]
     predicted_paths:
       t_000.0_s: 1483               # 29% of the reeling window
@@ -100,6 +100,15 @@ traj_opt:
       t_146.5_s: 1607               # 15% of the reeling window
     measured_W: 1692                # mean reel-out power the run harvested [W]
     ratio: 1.09                     # measured / predicted, against the weighted prediction
+    free_speed_reference_W: 1708    # mean reel-out power an OPTIMAL path could harvest with ANY winch in [f_min, f_max], solved after the run at 6 lengths and weighted by time spent at each. An UPPER BOUND, not a prediction of this k_v law, and never flown [W]
+    free_speed_points:
+      L_173.4_m: 1568               # free_speed solve [W]
+      L_212.8_m: 1721               # free_speed solve [W]
+      L_252.1_m: 1748               # free_speed solve [W]
+      L_291.5_m: 1745               # free_speed solve [W]
+      L_330.9_m: 1712               # free_speed solve [W]
+      L_370.2_m: 1680               # free_speed solve [W]
+    free_speed_ratio: 0.99          # measured / free_speed_reference_W; above 1 means the run harvests more than the optimizer's own upper bound, which no winch law can explain
   guess:
     a_deg: 25.2                     # width of the guess lemniscate, fitted into the startup box; azimuth spans ±a [deg]
     b_deg: 12.0                     # height of the guess, peak to peak, fitted into the startup box [deg]
@@ -142,16 +151,16 @@ traj_opt:
   reopt:
     requests: 3                     # solves that completed, accepted or rejected
     blocking: true                  # simulation held while a solve ran
-    blocked: 19.1                   # wall time the simulation was frozen waiting for replies [s]
-    cache_hits: 0                   # optimizer steps, startup included, served from the solution or failure cache (OptChain) without asking the server
-    cache_misses: 4                 # optimizer steps sent to the server
+    blocked: 0.0                    # wall time the simulation was frozen waiting for replies [s]
+    cache_hits: 4                   # optimizer steps, startup included, served from the solution or failure cache (OptChain) without asking the server
+    cache_misses: 0                 # optimizer steps sent to the server
     cache_rebuilds: 0               # server sessions rebuilt from the cache before a miss
     replayed_from: ""               # scenario whose optimizer results were flown instead of asking the optimizer (`replay_paths`); empty for a normal run
     installed: 3                    # new paths actually flown
     cycle_wall:
-      t_064.5_s: 6.0                # wall time from the first request to the verdict (installed), every retry included, at L = 227 m [s]
-      t_103.8_s: 8.5                # wall time from the first request to the verdict (installed), every retry included, at L = 280 m [s]
-      t_146.5_s: 4.5                # wall time from the first request to the verdict (installed), every retry included, at L = 340 m [s]
+      t_064.5_s: 0.0                # wall time from the first request to the verdict (installed), every retry included, at L = 227 m [s]
+      t_103.8_s: 0.0                # wall time from the first request to the verdict (installed), every retry included, at L = 280 m [s]
+      t_146.5_s: 0.0                # wall time from the first request to the verdict (installed), every retry included, at L = 340 m [s]
     blend_retries: 0                # cold-restart attempts spent on a rejected reply — a folded blend, a collapsed prediction, or a clearance/elevation shortfall re-asked at a raised floor — across every install this run
     challenges: 0                   # cold challenger solves run against an accepted reply that grew by more than challenge_growth while predicting less than the previous install
     challenges_won: 0               # challengers installed instead of the reply they challenged
@@ -205,30 +214,31 @@ traj_opt:
     force_limit: "soft"             # the reel-out law itself limits the force, inverting the optimizer's own saturating tension curve (beta 3e-02/1e-03, force filtered at tau = 1.00 s); the UpperForceController is held in reset, so upper_force_pct is 0 by construction
 performance:
   sim_time: 208.7                   # simulated time [s]
-  wall_time: 53.7                   # wall-clock time [s]
-  total_wall_time: 72.3             # the whole script: package loading, init, settling, the startup solve and the run, up to this summary — the archive copy and any plots follow it [s]
-  optimization_time: 30.4           # wall time waiting for the optimizer: the startup solve (11.3 s) plus every blocking re-optimization (traj_opt.reopt.blocked) [s]
-  max_optimization_time: 11.3       # longest wall time to compute a new figure of eight, retries included: the startup solve; the slowest re-optimization took 8.5 s [s]
-  realtime_factor: 6.03             # sim_time / wall_time, excluding time frozen for re-optimization
-  ms_per_step: 1.8                  # wall time per step, excluding time frozen for re-optimization [ms]
+  wall_time: 36.6                   # wall-clock time [s]
+  total_wall_time: 147.1            # the whole script: package loading, init, settling, the startup solve and the run, up to this summary — the archive copy and any plots follow it [s]
+  optimization_time: 0.1            # wall time waiting for the optimizer: the startup solve (0.1 s) plus every blocking re-optimization (traj_opt.reopt.blocked) [s]
+  max_optimization_time: 0.1        # longest wall time to compute a new figure of eight, retries included: the startup solve; the slowest re-optimization took 0.0 s [s]
+  realtime_factor: 5.7              # sim_time / wall_time, excluding time frozen for re-optimization
+  ms_per_step: 2.0                  # wall time per step, excluding time frozen for re-optimization [ms]
   steps: 18782                      # step count
   dt: 0.011111111111111112          # simulation timestep [s]
   vsm_interval: 5                   # VSM aerodynamic update interval [steps]
 summary:
   date: "2026-10-05"                # wall-clock date the run finished
-  time: "18:40:22"                  # wall-clock time the run finished
+  time: "19:55:25"                  # wall-clock time the run finished
   wind_speed_gnd: 4.0               # wind speed at 6 m sent to the optimizer [m/s]
   power_ratio: 1.09                 # measured / predicted reel-out power [-]
+  power_ratio_free_speed: 0.99      # measured / free_speed reference reel-out power (1708 W, an UPPER BOUND over any winch in [f_min, f_max]); above 1 cannot be explained by any winch law [-]
   success_criteria: "all 10 passed" # pass/fail verdict vs V3Kite's success criteria
   cross_track_rms_deg: 0.58         # RMS cross-track error, settled window [deg]
-  total_wall_time: 72.3             # the whole script, start to this summary [s]
-  realtime_factor: 6.03             # sim_time / wall_time, excluding time frozen for re-optimization
+  total_wall_time: 147.1            # the whole script, start to this summary [s]
+  realtime_factor: 5.7              # sim_time / wall_time, excluding time frozen for re-optimization
   optimization_requests: 3          # solves that completed, accepted or rejected
   optimizations_installed: 3        # new paths actually flown
   fastest_fig8: 34.2                # shortest time for flying one full figure of eight [s]
-  max_optimization_time: 11.3       # longest wall time to compute a new figure of eight, retries included [s]
+  max_optimization_time: 0.1        # longest wall time to compute a new figure of eight, retries included [s]
   av_power_ro: 1720                 # mean reel-out power over phase four [W]
-  min_power_ro: 1242                # min reel-out power over phase four, last 2 s excluded [W]
+  min_power_ro: 1239                # min reel-out power over phase four, last 2 s excluded [W]
   max_power_ro: 2805                # max reel-out power over phase four [W]
   min_force_ro: 1090                # min tether force over phase four, last 2 s excluded [N]
   av_force_ro: 1242                 # mean tether force over phase four [N]
