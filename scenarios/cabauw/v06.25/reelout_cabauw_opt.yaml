@@ -71,10 +71,10 @@ reelout:
   force:
     cf_force_ro: 1.1                # crest factor: peak / mean tether force over the reeling window
   power:
-    cf_power_ro: 1.14               # crest factor: peak / mean reel-out power over the reeling window
-    duration: 68.6                  # reeling window length [s]
-    n_samples: 6172                 # sample count in the reeling window
-    energy_kJ: 1564.8               # energy over the reeling window [kJ]
+    cf_power_ro: 1.13               # crest factor: peak / mean reel-out power over the reeling window
+    duration: 61.2                  # reeling window length [s]
+    n_samples: 5508                 # sample count in the reeling window
+    energy_kJ: 1420.5               # energy over the reeling window [kJ]
     energy_run_kJ: 1564.8           # energy over the whole run [kJ]
   winch_state:
     speed_pct: 100.0                # % of the reeling window in speed control (state 1)
@@ -91,15 +91,15 @@ reelout:
     steady_v_reelout_m_s: 3.37      # mean v_reelout after ring_span [m/s]
 traj_opt:
   power:
-    predicted_W: 23435              # predicted mean reel-out power of the paths actually flown, weighted by their share of the reeling window [W]
+    predicted_W: 23345              # predicted mean reel-out power of the paths actually flown, weighted by their share of the reeling window [W]
     predicted_initial_W: 21600      # predicted mean reel-out power of the path installed before the run [W]
     predicted_paths:
-      t_000.0_s: 21600              # 26% of the reeling window
-      t_034.0_s: 23597              # 27% of the reeling window
-      t_052.3_s: 24402              # 43% of the reeling window
+      t_000.0_s: 21600              # 29% of the reeling window
+      t_034.0_s: 23597              # 30% of the reeling window
+      t_052.3_s: 24402              # 41% of the reeling window
       t_081.5_s: 23919              # 5% of the reeling window
-    measured_W: 22818               # mean reel-out power the run harvested [W]
-    ratio: 0.97                     # measured / predicted, against the weighted prediction
+    measured_W: 23198               # mean reel-out power the run harvested [W]
+    ratio: 0.99                     # measured / predicted, against the weighted prediction
   guess:
     a_deg: 25.2                     # width of the guess lemniscate, fitted into the startup box; azimuth spans ±a [deg]
     b_deg: 12.0                     # height of the guess, peak to peak, fitted into the startup box [deg]
@@ -221,7 +221,7 @@ summary:
   date: "2026-10-05"                # wall-clock date the run finished
   time: "19:01:25"                  # wall-clock time the run finished
   wind_speed_gnd: 6.25              # wind speed at 6 m sent to the optimizer [m/s]
-  power_ratio: 0.97                 # measured / predicted reel-out power [-]
+  power_ratio: 0.99                 # measured / predicted reel-out power [-]
   success_criteria: "all 10 passed" # pass/fail verdict vs V3Kite's success criteria
   cross_track_rms_deg: 0.93         # RMS cross-track error, settled window [deg]
   total_wall_time: 112.0            # the whole script, start to this summary [s]
@@ -230,15 +230,15 @@ summary:
   optimizations_installed: 3        # new paths actually flown
   fastest_fig8: 15.3                # shortest time for flying one full figure of eight [s]
   max_optimization_time: 58.0       # longest wall time to compute a new figure of eight, retries included [s]
-  av_power_ro: 23188                # mean reel-out power over phase four [W]
-  min_power_ro: 14533               # min reel-out power over phase four, last 2 s excluded [W]
+  av_power_ro: 23635                # mean reel-out power over phase four [W]
+  min_power_ro: 19973               # min reel-out power over phase four, last 2 s excluded [W]
   max_power_ro: 26101               # max reel-out power over phase four [W]
-  min_force_ro: 5724                # min tether force over phase four, last 2 s excluded [N]
-  av_force_ro: 6815                 # mean tether force over phase four [N]
+  min_force_ro: 6047                # min tether force over phase four, last 2 s excluded [N]
+  av_force_ro: 6824                 # mean tether force over phase four [N]
   max_force_ro: 7459                # max tether force over phase four [N]
-  v_ro_min: 2.54                    # min reel-out speed over phase four, last 2 s excluded [m/s]
-  v_ro_av: 3.39                     # mean reel-out speed over phase four [m/s]
+  v_ro_min: 3.22                    # min reel-out speed over phase four, last 2 s excluded [m/s]
+  v_ro_av: 3.46                     # mean reel-out speed over phase four [m/s]
   v_ro_max: 3.5                     # max reel-out speed over phase four [m/s]
-  av_depower_ro: 0.286              # mean KCU depower over phase four [-]
+  av_depower_ro: 0.284              # mean KCU depower over phase four [-]
   max_depower_final: 0.378          # highest depower the force limiter asked for, from the stop latch through phase 5; the phase-5 floor itself when it never engaged or is off (depower_final_max == depower_final) [-]
   gain_scale_final_peak: 1.662      # heading_p factor phase 5 flew with at the limiter's peak, c1(depower_setpoint)/c1(flown), read at 0.375 [-]
