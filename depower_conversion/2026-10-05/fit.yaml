@@ -1,0 +1,33 @@
+runs:
+  - "depower_conversion/2026-10-05/runs/cabauw_v04.0"
+  - "depower_conversion/2026-10-05/runs/cabauw_v05.0"
+  - "depower_conversion/2026-10-05/runs/cabauw_v06.0"
+  - "depower_conversion/2026-10-05/runs/cabauw_v07.0"
+  - "depower_conversion/2026-10-05/runs/cabauw_v08.0"
+  - "depower_conversion/2026-10-05/runs/cabauw_v09.0"
+  - "depower_conversion/2026-10-05/runs/cabauw_v10.0"
+  - "depower_conversion/2026-10-05/runs/maasvlakte_v08.0"
+  - "depower_conversion/2026-10-05/runs/maasvlakte_v10.0"
+  - "depower_conversion/2026-10-05/runs/maasvlakte_v11.0"
+shifts:
+  - -0.01
+  - 0.0
+  - 0.01
+fit_offset: true
+weighted_rms_residual: 0.00336
+conversion_in_force:
+  curvature: 0.2387
+  slope: 0.1425
+  pivot: 1.43
+  l_dp_max: 1.91
+  l_dp_min: 1.4
+  offset: 0.1065
+date: "2026-10-05"
+fit:
+  curvature: 0.2427
+  slope: 0.1392
+  pivot: 1.43
+  l_dp_max: 1.91
+  l_dp_min: 1.4
+  offset: 0.1076
+paths: 30
