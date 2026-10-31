@@ -20,8 +20,9 @@ traj_opt:
     startup_retry_el_offsets: [-1.0, 2.0, -2.0]   # seeds tried in order on a startup 422; [] never retries [deg]
     # Guess sizes [guess_a, guess_b] tried at the base centre on a startup 422, before the offsets.
     # rom_config_aerostructural2 (2026-10-28): 32x14 converges at 5, 6, 8, 8.25 m/s, 30x13 at 7, 8,
-    # 8.25 and 34x15 at 5, 6, 7, 8.25 m/s; no single size covers all [deg]
-    startup_retry_guess_sizes: [[30.0, 13.0], [34.0, 15.0]]
+    # 8.25 and 34x15 at 5, 6, 7, 8.25 m/s; no single size covers all; 26x11 at 5 m/s with the
+    # 12.62 kg wing (bridle 1.62 kg, 2026-10-30) where all the others fail [deg]
+    startup_retry_guess_sizes: [[30.0, 13.0], [34.0, 15.0], [26.0, 11.0]]
 
   seed:  # depower seed of the solve, ramped with the wind
     input_depower:     1.5   # depower SEED in metres of tape (server bounds 1.1-2.3), not depower_setpoint [m]
@@ -65,6 +66,11 @@ traj_opt:
     pattern_symmetric: true       # mirror-symmetric figure about azimuth 0; the solve is multi-modal and
                                   # otherwise lands lopsided (Cabauw 2026-09-25: centre -2.3°, lobes 214/147 points)
     pattern_climb_angle_max: 45.0 # steepest climb of the path in the az/el plane; descending is free; 0 is off [°]
+    pattern_shape_wind_ref: 12.5  # wind at pattern_elevation_amplitude_max_wind_height at/above which the two
+                                  # _shape_high values below apply; 0 = off. With the 12.62 kg wing Maasvlakte
+                                  # 10 m/s (12.9 there) converges only without both (2026-10-31); 9 m/s is 11.6 [m/s]
+    pattern_symmetric_shape_high: false     # pattern_symmetric at/above pattern_shape_wind_ref
+    pattern_climb_angle_max_shape_high: 0.0 # pattern_climb_angle_max at/above pattern_shape_wind_ref; 0 is off [°]
 
   gates:  # every returned path, at startup and after a re-optimization
     min_feasibility_margin: 0.82  # curvature gate AND request (as min_turn_radius); 0.0 = off; an 8 m/s number [-]
